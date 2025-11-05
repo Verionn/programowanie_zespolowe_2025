@@ -1,0 +1,79 @@
+{
+  "IcoMoonType": "selection",
+  "icons": [
+    {
+      "icon": {
+        "paths": [
+          "M512 128c-197.333 0-360.192 149.632-381.483 341.376h296.149v-128l213.333 170.667-213.333 170.667v-128h-296.107c21.333 191.701 184.149 341.291 381.44 341.291 211.755 0 384-172.245 384-384s-172.245-384-384-384z"
+        ],
+        "attrs": [{}],
+        "isMulticolor": false,
+        "isMulticolor2": false,
+        "grid": 0,
+        "tags": ["bxs-log-in-circle"]
+      },
+      "attrs": [{}],
+      "properties": {
+        "order": 2,
+        "id": 1,
+        "name": "bxs-log-in-circle",
+        "prevSize": 32,
+        "code": 59648
+      },
+      "setIdx": 0,
+      "setId": 0,
+      "iconIdx": 0
+    },
+    {
+      "icon": {
+        "paths": [
+          "M469.248 682.667l213.333-170.667-213.333-170.667v128h-384v85.333h384z",
+          "M554.624 127.957c-0.314-0.001-0.686-0.001-1.057-0.001-105.714 0-201.381 43.014-270.455 112.495l-0.018 0.018 60.331 60.331c56.405-56.405 131.413-87.509 211.2-87.509s154.795 31.104 211.2 87.509 87.509 131.413 87.509 211.2-31.104 154.795-87.509 211.2-131.413 87.509-211.2 87.509-154.795-31.104-211.2-87.509l-60.331 60.331c72.491 72.533 168.917 112.512 271.531 112.512s199.040-39.979 271.531-112.512c72.533-72.491 112.512-168.917 112.512-271.531s-39.979-199.040-112.512-271.531c-69.092-69.499-164.759-112.513-270.473-112.513-0.372 0-0.744 0.001-1.115 0.002l0.058-0z"
+        ],
+        "attrs": [{}, {}],
+        "isMulticolor": false,
+        "isMulticolor2": false,
+        "grid": 0,
+        "tags": ["bx-log-in-circle-outline"]
+      },
+      "attrs": [{}, {}],
+      "properties": {
+        "order": 3,
+        "id": 0,
+        "name": "bx-log-in-circle-outline",
+        "prevSize": 32,
+        "code": 59649
+      },
+      "setIdx": 0,
+      "setId": 0,
+      "iconIdx": 1
+    }
+  ],
+  "height": 1024,
+  "metadata": { "name": "icomoon" },
+  "preferences": {
+    "showGlyphs": true,
+    "showCodes": true,
+    "showQuickUse": true,
+    "showQuickUse2": true,
+    "showSVGs": true,
+    "fontPref": {
+      "prefix": "icon-",
+      "metadata": {
+        "fontFamily": "icomoon",
+        "majorVersion": 1,
+        "minorVersion": 0
+      },
+      "metrics": { "emSize": 1024, "baseline": 6.25, "whitespace": 50 },
+      "embed": false
+    },
+    "imagePref": {
+      "prefix": "icon-",
+      "png": true,
+      "useClassSelector": true,
+      "color": 0,
+      "bgColor": 16777215
+    },
+    "historySize": 50
+  }
+}
