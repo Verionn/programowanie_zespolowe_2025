@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 00_init_emergency_schema
+      author: dabkowski
+      changes:
+        - createTable:
+            tableName: emergency_emergency
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  autoIncrement: false
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: text
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: type
+                  type: text
+              - column:
+                  name: status
+                  type: text
+              - column:
+                  name: latitude
+                  type: numeric(10,8)
+              - column:
+                  name: longitude
+                  type: numeric(11,8)
+              - column:
+                  name: start_date
+                  type: Timestamp

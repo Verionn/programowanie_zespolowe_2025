@@ -16,6 +16,8 @@
 
     <modules>
         <module>main-web</module>
+        <module>emergency</module>
+        <module>common</module>
     </modules>
 
     <properties>
