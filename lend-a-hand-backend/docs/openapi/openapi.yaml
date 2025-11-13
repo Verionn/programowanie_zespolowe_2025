@@ -1,0 +1,40 @@
+openapi: 3.1.0
+info:
+  title: "Lend a Hand"
+  description: ""
+  version: 1.0.0
+tags:
+  - name: emergencies
+    description: Requests related to Emergencies
+  - name: volunteer
+    description: Requests related to Volunteers
+  - name: authentication
+    description: Requests related to Authentication
+
+paths:
+  /emergencies/{emergencyId}:
+    get:
+      tags:
+        - Emergency
+      summary: Fetch emergency
+      operationId: fetchEmergency
+      parameters:
+        - in: path
+          name: emergencyId
+          schema:
+            type: UUID
+          required: true
+          description: Emergency UUID
+      responses:
+        '200':
+          description: Successfully fetched emergency
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FetchEmergencyResponse'
+        '404':
+          description: Emergency has not been found in the database
+        '409':
+          description: An unknown error has occurred
