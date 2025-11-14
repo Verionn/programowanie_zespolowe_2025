@@ -36,4 +36,13 @@ public class EmergencyController {
                         )
                 );
     }
+
+    @GetMapping("/emergencies")
+    ResponseEntity<?> fetchEmergencies() {
+        return emergencies.fetchEmergencies().fold(
+                EmergencyResponseSolver::resolveError,
+                response -> ResponseEntity.status(OK).body(
+                        emergencyControllerMapper.emergenciesToFetchEmergenciesResponse(response))
+        );
+    }
 }
