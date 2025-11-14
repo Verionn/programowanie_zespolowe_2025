@@ -38,3 +38,70 @@ paths:
           description: Emergency has not been found in the database
         '409':
           description: An unknown error has occurred
+  /emergencies:
+    get:
+      tags:
+        - emergencies
+      summary: Fetch emergencies
+      operationId: fetchEmergencies
+      responses:
+        '200':
+          description: Successfully fetched emergencies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FetchEmergenciesResponse'
+        '409':
+          description: An unknown error has occurred
+components:
+  schemas:
+    EmergencyType:
+      type: string
+      enum:
+        - CLEANUP_ASSISTANCE
+        - FOOD_SUPPLY
+        - WATER_SUPPLY
+        - MEDICINE_SUPPLY
+        - HYGIENE_PRODUCTS
+        - REPAIR_ASSISTANCE
+
+    FetchEmergencyResponse:
+      properties:
+        id:
+          type: string
+          example: "8096c0dd-64f0-49cf-9282-8dfbb788ff0a"
+        userId:
+          type: string
+          example: "5cd65a54-d6d5-4e3b-886c-65e3b59e232e"
+        title:
+          type: string
+          example: "Zbiórka gruzu po powodzi"
+        description:
+          type: string
+          example: "Mój dom został zniszczony przez powódź i potrzebuję pomocy w sprzątaniu oraz zbieraniu gruzu. Każda ręka do pracy się liczy!"
+        type:
+          $ref: '#/components/schemas/EmergencyType'
+          example: "CLEANUP_ASSISTANCE"
+        status:
+          type: boolean
+          example: false
+        latitude:
+          type: number
+          format: float
+          example: 21.00
+        longitude:
+          type: number
+          format: float
+          example: 52.15
+        startDate:
+          type: string
+          format: date-time
+          example: "2024-11-12T14:30:00Z"
+
+    FetchEmergenciesResponse:
+      type: object
+      properties:
+        emergencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/FetchEmergencyResponse'
