@@ -15,4 +15,10 @@ public interface EmergencyControllerMapper {
 
     CreateEmergencyResponse emergencyToCreateEmergencyResponse(Emergency emergency);
 
+    FetchEmergenciesResponse.Emergency mapToFetchEmergenciesResponse(Emergency emergency);
+
+    default FetchEmergenciesResponse emergenciesToFetchEmergenciesResponse(List<Emergency> emergencies) {
+        return new FetchEmergenciesResponse(
+                emergencies.stream().map(this::mapToFetchEmergenciesResponse).collect(Collectors.toList()));
+    }
 }

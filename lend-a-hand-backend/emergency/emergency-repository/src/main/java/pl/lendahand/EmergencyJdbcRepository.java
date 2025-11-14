@@ -14,13 +14,17 @@ import java.util.UUID;
 
 import static org.springframework.dao.support.DataAccessUtils.singleResult;
 import static pl.lendahand.EmergencyQuery.*;
+import static pl.lendahand.EmergencyQuery.FETCH_EMERGENCIES;
 
 public class EmergencyJdbcRepository implements EmergencyRepository {
 
     private final static String FAILED_TO_SAVE_EMERGENCY = "Failed to save emergency!";
     private final static String SUCCESSFULLY_SAVED_EMERGENCY = "Successfully saved emergency!";
+    private final static String FAILED_TO_FETCH_EMERGENCIES = "Failed to fetch emergencies!";
+    private final static String SUCCESSFULLY_FETCHED_EMERGENCIES = "Successfully fetched emergencies!";
     private final Logger LOGGER = LoggerFactory.getLogger(EmergencyJdbcRepository.class);
     private final JdbcTemplate jdbcTemplate;
+    private final EmergencyMapper EMERGENCY_MAPPER = new EmergencyMapper();
 
     public EmergencyJdbcRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -47,5 +51,13 @@ public class EmergencyJdbcRepository implements EmergencyRepository {
                 emergencyEntity.latitude(),
                 emergencyEntity.longitude(),
                 emergencyEntity.startDate()));
+    }
+
+    public Either<BaseError, List<EmergencyEntity>> find() {
+        return Try.of(() -> jdbcTemplate.query(FETCH_EMERGENCIES, EMERGENCY_MAPPER))
+                .onFailure(error -> LOGGER.warn(FAILED_TO_FETCH_EMERGENCIES, error))
+                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_FETCHED_EMERGENCIES))
+                .toEither()
+                .mapLeft(error -> new EmergencyError.DatabaseReadUnsuccessfulError());
     }
 }

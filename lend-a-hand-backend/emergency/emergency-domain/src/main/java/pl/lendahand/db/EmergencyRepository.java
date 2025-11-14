@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface EmergencyRepository {
 
     Either<BaseError, EmergencyEntity> save(EmergencyEntity emergencyEntity);
+    Either<BaseError, List<EmergencyEntity>> find();
 }
