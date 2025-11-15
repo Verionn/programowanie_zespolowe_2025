@@ -13,4 +13,7 @@ public class EmergencyQuery {
 
     public static final String FETCH_EMERGENCY = "SELECT * FROM %s WHERE %s = ?"
             .formatted(EMERGENCY_TABLE, ID_COLUMN);
+
+    public static final String DELETE_EMERGENCY = "DELETE FROM %s WHERE %s = ?"
+            .formatted(EMERGENCY_TABLE, ID_COLUMN);
 }

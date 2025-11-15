@@ -35,4 +35,8 @@ public class Emergencies {
                 .filterOrElse(Objects::nonNull, error -> new EmergencyDomainError.EmergencyNotFound())
                 .map(emergencyMapper::emergencyEntityToEmergency);
     }
+
+    public Either<BaseError, UUID> deleteEmergency(UUID emergencyId) {
+        return emergencyRepository.delete(emergencyId);
+    }
 }

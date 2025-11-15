@@ -13,4 +13,5 @@ public interface EmergencyRepository {
     Either<BaseError, EmergencyEntity> save(EmergencyEntity emergencyEntity);
     Either<BaseError, EmergencyEntity> find(UUID emergencyId);
     Either<BaseError, List<EmergencyEntity>> find();
+    Either<BaseError, UUID> delete(UUID emergencyId);
 }
