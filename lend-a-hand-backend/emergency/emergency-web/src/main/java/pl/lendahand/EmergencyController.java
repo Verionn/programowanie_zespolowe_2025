@@ -45,4 +45,13 @@ public class EmergencyController {
                         emergencyControllerMapper.emergenciesToFetchEmergenciesResponse(response))
         );
     }
+
+    @GetMapping("/emergencies/{emergencyId}")
+    ResponseEntity<?> fetchEmergency(@PathVariable("emergencyId") UUID emergencyId) {
+        return emergencies.fetchEmergency(emergencyId).fold(
+                EmergencyResponseSolver::resolveError,
+                response -> ResponseEntity.status(OK).body(
+                        emergencyControllerMapper.emergencyToFetchEmergencyResponse(response))
+        );
+    }
 }
