@@ -53,6 +53,28 @@ paths:
                 $ref: '#/components/schemas/FetchEmergenciesResponse'
         '409':
           description: An unknown error has occurred
+    post:
+      tags:
+        - emergencies
+      summary: Add a new emergency
+      operationId: addNewEmergency
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEmergencyRequest'
+      responses:
+        '201':
+          description: Emergency created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateEmergencyResponse'
+        '400':
+          description: Bad request
+        '409':
+          description: An unknown error has occurred
+
 components:
   schemas:
     EmergencyType:
@@ -105,3 +127,63 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FetchEmergencyResponse'
+
+    CreateEmergencyRequest:
+      properties:
+        id:
+          type: string
+          example: "8096c0dd-64f0-49cf-9282-8dfbb788ff0a"
+        title:
+          type: string
+          example: "Zbiórka gruzu po powodzi"
+        description:
+          type: string
+          example: "Mój dom został zniszczony przez powódź i potrzebuję pomocy w sprzątaniu oraz zbieraniu gruzu. Każda ręka do pracy się liczy!"
+        type:
+          $ref: '#/components/schemas/EmergencyType'
+          example: "CLEANUP_ASSISTANCE"
+        latitude:
+          type: number
+          format: float
+          example: 21.00
+        longitude:
+          type: number
+          format: float
+          example: 52.15
+        startDate:
+          type: string
+          format: date-time
+          example: "2024-11-12T14:30:00Z"
+
+    CreateEmergencyResponse:
+      properties:
+        id:
+          type: string
+          example: "8096c0dd-64f0-49cf-9282-8dfbb788ff0a"
+        userId:
+          type: string
+          example: "5cd65a54-d6d5-4e3b-886c-65e3b59e232e"
+        title:
+          type: string
+          example: "Zbiórka gruzu po powodzi"
+        description:
+          type: string
+          example: "Mój dom został zniszczony przez powódź i potrzebuję pomocy w sprzątaniu oraz zbieraniu gruzu. Każda ręka do pracy się liczy!"
+        type:
+          $ref: '#/components/schemas/EmergencyType'
+          example: "CLEANUP_ASSISTANCE"
+        status:
+          type: boolean
+          example: false
+        latitude:
+          type: number
+          format: float
+          example: 21.00
+        longitude:
+          type: number
+          format: float
+          example: 52.15
+        startDate:
+          type: string
+          format: date-time
+          example: "2024-11-12T14:30:00Z"
