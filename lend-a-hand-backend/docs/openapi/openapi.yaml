@@ -38,6 +38,25 @@ paths:
           description: Emergency has not been found in the database
         '409':
           description: An unknown error has occurred
+    delete:
+      tags:
+        - Emergency
+      summary: Delete emergency
+      operationId: deleteEmergency
+      parameters:
+        - in: path
+          name: emergencyId
+          schema:
+            type: UUID
+          required: true
+          description: Emergency UUID
+      responses:
+        '200':
+          description: Successfully deleted emergency
+        '404':
+          description: Emergency has not been found in the database
+        '409':
+          description: An unknown error has occurred
   /emergencies:
     get:
       tags:
