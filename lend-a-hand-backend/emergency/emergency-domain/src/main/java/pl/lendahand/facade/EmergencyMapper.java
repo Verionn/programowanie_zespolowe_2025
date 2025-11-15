@@ -12,5 +12,6 @@ public interface EmergencyMapper {
     EmergencyMapper INSTANCE = Mappers.getMapper(EmergencyMapper.class);
 
     EmergencyEntity emergencyToEmergencyEntity(Emergency emergency);
+    Emergency emergencyEntityToEmergency(EmergencyEntity emergencyEntity);
     List<Emergency> emergencyEntitiesToEmergencies(List<EmergencyEntity> emergencyEntities);
 }

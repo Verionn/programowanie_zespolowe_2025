@@ -21,4 +21,6 @@ public interface EmergencyControllerMapper {
         return new FetchEmergenciesResponse(
                 emergencies.stream().map(this::mapToFetchEmergenciesResponse).collect(Collectors.toList()));
     }
+
+    FetchEmergencyResponse emergencyToFetchEmergencyResponse(Emergency emergency);
 }

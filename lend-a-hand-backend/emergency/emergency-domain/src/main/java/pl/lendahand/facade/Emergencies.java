@@ -2,10 +2,13 @@ package pl.lendahand.facade;
 
 import io.vavr.control.Either;
 import pl.lendahand.BaseError;
+import pl.lendahand.EmergencyDomainError;
 import pl.lendahand.db.EmergencyRepository;
 import pl.lendahand.model.Emergency;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public class Emergencies {
 
@@ -25,5 +28,11 @@ public class Emergencies {
         return emergencyRepository.find()
                 .map(emergencyMapper::emergencyEntitiesToEmergencies);
 
+    }
+
+    public Either<BaseError, Emergency> fetchEmergency(UUID emergencyId) {
+        return emergencyRepository.find(emergencyId)
+                .filterOrElse(Objects::nonNull, error -> new EmergencyDomainError.EmergencyNotFound())
+                .map(emergencyMapper::emergencyEntityToEmergency);
     }
 }
