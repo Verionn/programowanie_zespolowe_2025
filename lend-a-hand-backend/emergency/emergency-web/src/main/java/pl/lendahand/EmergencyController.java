@@ -54,4 +54,12 @@ public class EmergencyController {
                         emergencyControllerMapper.emergencyToFetchEmergencyResponse(response))
         );
     }
+
+    @DeleteMapping("/emergencies/{emergencyId}")
+    ResponseEntity<?> deleteEmergency(@PathVariable("emergencyId") UUID emergencyId) {
+        return emergencies.deleteEmergency(emergencyId).fold(
+                EmergencyResponseSolver::resolveError,
+                response -> ResponseEntity.status(OK).build()
+        );
+    }
 }

@@ -23,6 +23,8 @@ public class EmergencyJdbcRepository implements EmergencyRepository {
     private final static String SUCCESSFULLY_FETCHED_EMERGENCIES = "Successfully fetched emergencies!";
     private final static String FAILED_TO_FETCH_EMERGENCY = "Failed to fetch emergency!";
     private final static String SUCCESSFULLY_FETCHED_EMERGENCY = "Successfully fetched emergency!";
+    private final static String FAILED_TO_DELETE_EMERGENCY = "Failed to delete emergency!";
+    private final static String SUCCESSFULLY_DELETED_EMERGENCY = "Successfully deleted emergency!";
     private final Logger LOGGER = LoggerFactory.getLogger(EmergencyJdbcRepository.class);
     private final JdbcTemplate jdbcTemplate;
     private final EmergencyMapper EMERGENCY_MAPPER = new EmergencyMapper();
@@ -68,5 +70,14 @@ public class EmergencyJdbcRepository implements EmergencyRepository {
                 .onSuccess(success -> LOGGER.info(SUCCESSFULLY_FETCHED_EMERGENCY))
                 .toEither()
                 .mapLeft(error -> new EmergencyError.FailedToFetchEmergencyError());
+    }
+
+    public Either<BaseError, UUID> delete(UUID emergencyId) {
+        return Try.of(() -> jdbcTemplate.update(DELETE_EMERGENCY, emergencyId))
+                .onFailure(error -> LOGGER.warn(FAILED_TO_DELETE_EMERGENCY))
+                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_DELETED_EMERGENCY))
+                .toEither()
+                .map(success -> emergencyId)
+                .mapLeft(error -> new EmergencyError.FailedToDeleteEmergencyError());
     }
 }
