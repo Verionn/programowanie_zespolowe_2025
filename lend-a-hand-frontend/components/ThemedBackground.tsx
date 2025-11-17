@@ -12,6 +12,7 @@ import LightBackground from "../assets/svg/background_bs.svg";
 export type ThemedBackgroundProps = ViewProps & {
   lightColor?: string;
   darkColor?: string;
+  isSafeAreaNeeded?: boolean;
 };
 
 export function ThemedBackground({
@@ -19,6 +20,7 @@ export function ThemedBackground({
   lightColor,
   darkColor,
   children,
+  isSafeAreaNeeded = true,
   ...otherProps
 }: ThemedBackgroundProps) {
   const backgroundColor = useThemeColor(
@@ -31,7 +33,11 @@ export function ThemedBackground({
       <View style={styles.backgroundContainer}>
         <LightBackground width="100%" height="100%" />
       </View>
-      <SafeAreaView style={styles.overlay}>{children}</SafeAreaView>
+      {isSafeAreaNeeded ? (
+        <SafeAreaView style={styles.overlay}>{children}</SafeAreaView>
+      ) : (
+        <View style={styles.overlayNotSafe}>{children}</View>
+      )}
     </View>
   );
 }
@@ -46,7 +52,11 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    paddingTop:40
+    paddingTop: 40,
+  },
+  overlayNotSafe: {
+    flex: 1,
+    
   },
   backgroundContainer: {
     position: "absolute",

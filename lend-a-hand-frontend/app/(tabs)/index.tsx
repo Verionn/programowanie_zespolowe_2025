@@ -1,55 +1,48 @@
-import { Image, StyleSheet, Button } from "react-native";
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
+import { FlatList, StyleSheet, View } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
-import {  useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import React from "react";
+import { ThemedBackground } from "@/components/ThemedBackground";
+import { MapViewContainer } from "@/components/MapViewContainer";
+import { ButtonNavigation } from "@/components/ButtonNavigation";
+import { TabNavigationData } from "@/constants/TabNavigation";
+import { getHeightPercent } from "@/utils/function/functions";
 
 export default function HomeScreen() {
-  const router = useRouter();
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={
-        <Image
-          source={require("@/assets/images/partial-react-logo.png")}
-          style={styles.reactLogo}
+    <ThemedBackground style={{ flex: 1 }} isSafeAreaNeeded={false}>
+      <View style={styles.stepContainer}>
+        <FlatList
+          data={TabNavigationData}
+          renderItem={({ item }) => <ButtonNavigation item={item} />}
+          keyExtractor={(item) => item.name}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.flatListContainer}
+          style={styles.flatList}
         />
-      }
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome You s!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-
-      <ThemedView style={styles.stepContainer}>
-        <Button
-          title="Login"
-          onPress={() => {
-            router.push("/(tabs)/auth/login");
-          }}
-        />
-      </ThemedView>
-    </ParallaxScrollView>
+        <MapViewContainer />
+      </View>
+    </ThemedBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
   stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+    flex: 1,
+    position: "relative",
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
+  flatListContainer: {
+    paddingHorizontal: 10,
+    marginTop: getHeightPercent(20),
+  },
+  flatList: {
     position: "absolute",
+    top: getHeightPercent(10),
+    left: 0,
+    right: 0,
+    backgroundColor: "transparent",
+    zIndex: 100,
+    display: "flex",
   },
 });
