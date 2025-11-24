@@ -12,6 +12,7 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import React from "react";
 import { UserProvider } from "@/utils/context/userContext";
+import { ApiProvider } from "@/utils/context/apiContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,13 +33,17 @@ export default function RootLayout() {
   }
 
   return (
-    <UserProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      </ThemeProvider>
-    </UserProvider>
+    <ApiProvider>
+      <UserProvider>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </ThemeProvider>
+      </UserProvider>
+    </ApiProvider>
   );
 }
