@@ -3,17 +3,51 @@
   - README.md
   - types
     - router.d.ts
+  - web
+    - cache
+      - production
+        - images
+          - android-adaptive-foreground
+            - android-adaptive-foreground-5f4c0a732b6325bf4071d9124d2ae67e037cb24fcc9c482ef82bea742109a3b8-cover-transparent
+              - icon_108.png
+              - icon_162.png
+              - icon_216.png
+              - icon_324.png
+              - icon_432.png
+          - android-standard-circle
+            - android-standard-circle-5f4c0a732b6325bf4071d9124d2ae67e037cb24fcc9c482ef82bea742109a3b8-cover-#ffffff
+              - icon_108.png
+              - icon_162.png
+              - icon_216.png
+              - icon_324.png
+              - icon_432.png
+          - android-standard-square
+            - android-standard-square-5f4c0a732b6325bf4071d9124d2ae67e037cb24fcc9c482ef82bea742109a3b8-cover-#ffffff
+              - icon_108.png
+              - icon_162.png
+              - icon_216.png
+              - icon_324.png
+              - icon_432.png
+          - favicon
+            - favicon-24272cdaeff82cc5facdaccd982a6f05b60c4504704bbf94c19a6388659880bb-contain-transparent
+              - favicon-48.png
+          - splash-android
+            - splash-android-bc25a616b4e31cf7300cd97b9cbf8894e855e6373aa797d0badd7e211111c5e5-contain
+              - icon_undefined.png
 - .gitignore
 - app
   - (tabs)
-    - explore.tsx
+    - auth
+      - login.tsx
+      - register.tsx
+      - _layout.tsx
+    - emergency-details
+      - [id].tsx
+    - emergency.tsx
     - index.tsx
     - _layout.tsx
   - +html.tsx
   - +not-found.tsx
-  - auth
-    - login.tsx
-    - _layout.tsx
   - _layout.tsx
 - app.json
 - assets
@@ -21,6 +55,7 @@
     - SpaceMono-Regular.ttf
   - images
     - adaptive-icon.png
+    - background.png
     - favicon.png
     - icon.png
     - partial-react-logo.png
@@ -28,14 +63,29 @@
     - react-logo@2x.png
     - react-logo@3x.png
     - splash.png
+  - svg
+    - background.svg
+    - background_bigger.svg
+    - background_bs.svg
+    - iconMoon
+      - icomoon.ttf
+      - selection.json
 - babel.config.js
 - components
+  - ButtonNavigation.tsx
+  - clusterLib
+    - ClusteredMapView.tsx
+    - ClusterMarker.tsx
+    - mapHelpers.ts
+    - UserLocationButton.tsx
   - Collapsible.tsx
   - ExternalLink.tsx
   - HelloWave.tsx
+  - MapViewContainer.tsx
   - navigation
     - TabBarIcon.tsx
   - ParallaxScrollView.tsx
+  - ThemedBackground.tsx
   - ThemedText.tsx
   - ThemedView.tsx
   - __tests__
@@ -44,13 +94,21 @@
       - ThemedText-test.tsx.snap
 - constants
   - Colors.ts
+  - Iconmoon.ts
+  - TabNavigation.ts
+  - variables.ts
+- declaration.d.ts
 - expo-env.d.ts
 - hooks
   - useColorScheme.ts
   - useColorScheme.web.ts
+  - useScreenDimensions.ts
   - useThemeColor.ts
+  - useUserContext.ts
+- metro.config.js
 - package-lock.json
 - package.json
+- project_structure.text
 - README.md
 - scripts
   - reset-project.js
@@ -58,6 +116,16 @@
 - utils
   - api
     - auth.ts
+    - CRUD.ts
     - index.ts
     - user.ts
+  - context
+    - userContext.tsx
+  - function
+    - functions.ts
+  - Icons
+    - iconMoon.tsx
   - types
+    - CRUDTypes.ts
+    - types.ts
+- yarn.lock
