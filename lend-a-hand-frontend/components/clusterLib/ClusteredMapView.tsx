@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import MapView, { Marker, Region } from "react-native-maps";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 import * as Location from "expo-location";
 import SuperCluster, { PointFeature, ClusterFeature } from "supercluster";
 import UserLocationButton from "./UserLocationButton";
@@ -15,6 +15,9 @@ import { endpoint } from "@/constants/variables";
 import { pinColors, tintColorLight } from "@/constants/Colors";
 import ClusterMarker from "./ClusterMarker";
 import { getWidthPercent } from "@/utils/function/functions";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { useRouter } from "expo-router";
+import { useApiContext } from "@/utils/context/apiContext";
 
 export const ClusteredMapView = () => {
   const mapRef = useRef<MapView>(null);
@@ -22,7 +25,9 @@ export const ClusteredMapView = () => {
     (PointFeature<any> | ClusterFeature<any>)[]
   >([]);
   const [region, setRegion] = useState<Region | null>(null);
-  const [emergencies, setEmergencies] = useState<EmergencyType[]>([]);
+  const { emergencies } = useApiContext();
+
+  const router = useRouter();
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -30,32 +35,6 @@ export const ClusteredMapView = () => {
   const superClusterRef = useRef(
     new SuperCluster({ radius: getWidthPercent(6.5), maxZoom: 16 })
   );
-  console.log(getWidthPercent(6.5));
-  useEffect(() => {
-    const fetchDataAndLocation = async () => {
-      const response = await ApiService.get<{ emergencies: EmergencyType[] }>(
-        `${endpoint}emergencies`
-      );
-      setEmergencies(response.emergencies);
-
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") return;
-
-      const loc = await Location.getCurrentPositionAsync({});
-      setUserLocation({
-        latitude: loc.coords.latitude,
-        longitude: loc.coords.longitude,
-      });
-      setRegion({
-        latitude: loc.coords.latitude,
-        longitude: loc.coords.longitude,
-        latitudeDelta: 0.5,
-        longitudeDelta: 0.5,
-      });
-    };
-
-    fetchDataAndLocation();
-  }, []);
 
   useEffect(() => {
     if (region) {
@@ -82,7 +61,7 @@ export const ClusteredMapView = () => {
         {userLocation && (
           <Marker
             coordinate={userLocation}
-            title="Your Location"
+            title="Moja lokalizacja"
             pinColor={pinColors.USER_LOCATION}
           />
         )}
@@ -124,6 +103,17 @@ export const ClusteredMapView = () => {
 const styles = StyleSheet.create({
   map: {
     flex: 1,
+  },
+  locationButton: {
+    position: "absolute",
+    bottom: 100,
+    right: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: "#1F41BB",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
