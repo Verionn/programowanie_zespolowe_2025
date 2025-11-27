@@ -16,4 +16,7 @@ public class EmergencyQuery {
 
     public static final String DELETE_EMERGENCY = "DELETE FROM %s WHERE %s = ?"
             .formatted(EMERGENCY_TABLE, ID_COLUMN);
+
+    public static final String UPDATE_EMERGENCY = ("UPDATE %s SET user_id = ?, title = ?, description = ?, type = ?, status = ?, " +
+                    "latitude = ?, longitude = ?, start_date = ? WHERE id = ?").formatted(EMERGENCY_TABLE);
 }

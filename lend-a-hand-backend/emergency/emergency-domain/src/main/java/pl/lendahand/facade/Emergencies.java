@@ -30,6 +30,10 @@ public class Emergencies {
 
     }
 
+    public Either<BaseError, UUID> updateEmergency(UUID emergencyId, Emergency emergency) {
+        return emergencyRepository.update(emergencyId, emergencyMapper.emergencyToEmergencyEntity(emergency));
+    }
+
     public Either<BaseError, Emergency> fetchEmergency(UUID emergencyId) {
         return emergencyRepository.find(emergencyId)
                 .filterOrElse(Objects::nonNull, error -> new EmergencyDomainError.EmergencyNotFound())
