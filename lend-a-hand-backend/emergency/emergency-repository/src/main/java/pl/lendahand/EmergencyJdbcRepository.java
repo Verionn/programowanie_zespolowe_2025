@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import pl.lendahand.db.EmergencyRepository;
 import pl.lendahand.db.error.EmergencyError;
 import pl.lendahand.db.model.EmergencyEntity;
+import pl.lendahand.model.Emergency;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +26,9 @@ public class EmergencyJdbcRepository implements EmergencyRepository {
     private final static String SUCCESSFULLY_FETCHED_EMERGENCY = "Successfully fetched emergency!";
     private final static String FAILED_TO_DELETE_EMERGENCY = "Failed to delete emergency!";
     private final static String SUCCESSFULLY_DELETED_EMERGENCY = "Successfully deleted emergency!";
+    private static final String FAILED_TO_UPDATE_EMERGENCY = "Failed to update emergency";
+    private static final String EMERGENCY_UPDATED_SUCCESSFULLY = "Emergency updated successfully";
+
     private final Logger LOGGER = LoggerFactory.getLogger(EmergencyJdbcRepository.class);
     private final JdbcTemplate jdbcTemplate;
     private final EmergencyMapper EMERGENCY_MAPPER = new EmergencyMapper();
@@ -79,5 +83,15 @@ public class EmergencyJdbcRepository implements EmergencyRepository {
                 .toEither()
                 .map(success -> emergencyId)
                 .mapLeft(error -> new EmergencyError.FailedToDeleteEmergencyError());
+    }
+
+    @Override
+    public Either<BaseError, UUID> update(UUID emergencyId, EmergencyEntity emergencyEntity) {
+        return Try.of(() -> jdbcTemplate.update(UPDATE_EMERGENCY, emergencyId))
+                .onFailure(error -> LOGGER.warn(FAILED_TO_UPDATE_EMERGENCY))
+                .onSuccess(success -> LOGGER.info(EMERGENCY_UPDATED_SUCCESSFULLY))
+                .toEither()
+                .map(success -> emergencyId)
+                .mapLeft(error -> new EmergencyError.FailedToUpdateEmergencyError());
     }
 }

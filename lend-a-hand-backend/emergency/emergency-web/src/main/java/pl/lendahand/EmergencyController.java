@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.lendahand.facade.Emergencies;
 import pl.lendahand.model.CreateEmergencyRequest;
 import pl.lendahand.model.EmergencyControllerMapper;
+import pl.lendahand.model.UpdateEmergencyRequest;
 
 import java.security.Principal;
 import java.util.UUID;
@@ -35,6 +36,14 @@ public class EmergencyController {
                                 emergencyControllerMapper.emergencyToCreateEmergencyResponse(response)
                         )
                 );
+    }
+
+    @PutMapping("/emergencies/{emergencyId}")
+    ResponseEntity<?> updateEmergency(@PathVariable("emergencyId") UUID emergencyId, @Valid @RequestBody UpdateEmergencyRequest updateEmergencyRequest) {
+        return emergencies.updateEmergency(emergencyId, emergencyControllerMapper.updateEmergencyRequestToEmergency(updateEmergencyRequest)).fold(
+                EmergencyResponseSolver::resolveError,
+                response -> ResponseEntity.status(OK).build()
+        );
     }
 
     @GetMapping("/emergencies")
