@@ -57,6 +57,34 @@ paths:
           description: Emergency has not been found in the database
         '409':
           description: An unknown error has occurred
+    put:
+      tags:
+        - Emergency
+      summary: Update emergency
+      operationId: updateEmergency
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEmergencyRequest'
+      parameters:
+        - in: path
+          name: emergencyId
+          schema:
+            type: UUID
+          required: true
+          description: Emergency UUID
+      responses:
+        '200':
+          description: Successfully updated emergency
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FetchEmergencyResponse'
+        '409':
+          description: An unknown error has occurred
   /emergencies:
     get:
       tags:
@@ -194,6 +222,30 @@ components:
         status:
           type: boolean
           example: false
+        latitude:
+          type: number
+          format: float
+          example: 21.00
+        longitude:
+          type: number
+          format: float
+          example: 52.15
+        startDate:
+          type: string
+          format: date-time
+          example: "2024-11-12T14:30:00Z"
+
+    UpdateEmergencyRequest:
+      properties:
+        title:
+          type: string
+          example: "Zbiórka gruzu po powodzi"
+        description:
+          type: string
+          example: "Mój dom został zniszczony przez powódź i potrzebuję pomocy w sprzątaniu oraz zbieraniu gruzu. Każda ręka do pracy się liczy!"
+        type:
+          $ref: '#/components/schemas/EmergencyType'
+          example: "CLEANUP_ASSISTANCE"
         latitude:
           type: number
           format: float
