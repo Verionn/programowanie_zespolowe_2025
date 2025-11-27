@@ -13,6 +13,8 @@ public interface EmergencyControllerMapper {
 
     Emergency createRequestBodyToEmergency(CreateEmergencyRequest createRequestRequest, UUID userId, boolean status);
 
+    Emergency updateEmergencyRequestToEmergency(UpdateEmergencyRequest updateEmergencyRequest);
+
     CreateEmergencyResponse emergencyToCreateEmergencyResponse(Emergency emergency);
 
     FetchEmergenciesResponse.Emergency mapToFetchEmergenciesResponse(Emergency emergency);
