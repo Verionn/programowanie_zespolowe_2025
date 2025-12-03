@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import { useFonts } from "expo-font";
+import {StyleSheet} from "react-native";
+import {useFonts} from "expo-font";
 import createIconSetFromIcoMoon from "@expo/vector-icons/createIconSetFromIcoMoon";
-import { ThemedView } from "@/components/ThemedView";
+import {ThemedView} from "@/components/ThemedView";
 
 const Icon = createIconSetFromIcoMoon(
   require("../../assets/svg/iconMoon/selection.json"),

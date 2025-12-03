@@ -1,10 +1,10 @@
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { useState } from "react";
-import { TextInput, Button, StyleSheet, Image } from "react-native";
-import React from "react";
-import { Picker } from "@react-native-picker/picker";
+import {ThemedText} from "@/components/ThemedText";
+import {ThemedView} from "@/components/ThemedView";
+import React, {useState} from "react";
+import {Pressable, StyleSheet, Text, TextInput, View,} from "react-native";
+import {ThemedBackground} from "@/components/ThemedBackground";
+import {Link} from "expo-router";
+import {getHeightPercent, getWidthPercent} from "@/utils/function/functions";
 
 export default function RegisterScreen() {
   const [firstName, setFirstName] = useState("");
@@ -12,7 +12,9 @@ export default function RegisterScreen() {
   const [gender, setGender] = useState("male"); // Default value
   const [age, setAge] = useState("");
   const [username, setUsername] = useState("");
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const handleRegister = () => {
     console.log("First Name:", firstName);
     console.log("Last Name:", lastName);
@@ -22,99 +24,147 @@ export default function RegisterScreen() {
   };
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={
-        <Image
-          source={require("@/assets/images/partial-react-logo.png")}
-          style={styles.reactLogo}
-        />
-      }
-    >
-      <ThemedView style={styles.container}>
-        <ThemedText style={styles.title}>Register</ThemedText>
-        <TextInput
-          style={styles.input}
-          placeholder="Username"
-          value={username}
-          onChangeText={setUsername}
-        />
+    <ThemedBackground style={styles.background}>
+      <View style={styles.contentContainer}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.title}>Stwórz konto</Text>
+          <ThemedText style={styles.subtitle}>Stwórz konto pomagać innym!</ThemedText>
+        </View>
+        <ThemedView style={styles.formContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholderTextColor="#aaa"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="imię"
+            value={firstName}
+            onChangeText={setFirstName}
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholderTextColor="#aaa"
+          />
 
-        <TextInput
-          style={styles.input}
-          placeholder="First Name"
-          value={firstName}
-          onChangeText={setFirstName}
-        />
-
-        <TextInput
-          style={styles.input}
-          placeholder="Last Name"
-          value={lastName}
-          onChangeText={setLastName}
-        />
-
-        <ThemedView style={styles.pickerContainer}>
-          <Picker
-            selectedValue={gender}
-            onValueChange={(itemValue) => setGender(itemValue)}
-            style={styles.picker}
-          >
-            <Picker.Item label="Male" value="male" />
-            <Picker.Item label="Female" value="female" />
-            <Picker.Item label="Other" value="other" />
-          </Picker>
+          <TextInput
+            style={styles.input}
+            placeholder="Nazwisko"
+            value={lastName}
+            onChangeText={setLastName}
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholderTextColor="#aaa"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Hasło"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholderTextColor="#aaa"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder=" Potwierdż Hasło"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholderTextColor="#aaa"
+          />
+          <Pressable style={styles.button} onPress={handleRegister}>
+            <ThemedText style={styles.loginText}>Zaloguj się</ThemedText>
+          </Pressable>
+          <ThemedText style={styles.registerContainer}>
+            <Link href={"/(tabs)/auth/login"}>Posiadam już konto</Link>
+          </ThemedText>
         </ThemedView>
-
-        <TextInput
-          style={styles.input}
-          placeholder="Age"
-          value={age}
-          onChangeText={setAge}
-          keyboardType="numeric"
-        />
-
-        <Button title="Register" onPress={handleRegister} />
-      </ThemedView>
-    </ParallaxScrollView>
+      </View>
+    </ThemedBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 20,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
+  contentContainer: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingHorizontal: getWidthPercent(2),
+    paddingTop:getHeightPercent(10)
+  },
+  headerContainer: {
+    alignItems: "center",
+    marginBottom: getHeightPercent(2),
+    display: "flex",
+    justifyContent: "center",
+    width: "100%",
+    padding: getHeightPercent(5),
+    gap: 10,
     textAlign: "center",
+  },
+  formContainer: {
+    backgroundColor: "white",
+    padding: getHeightPercent(8),
+    display: "flex",
+    justifyContent: "center",
+    width: "100%",
   },
   input: {
     height: 50,
-    borderColor: "#ccc",
+    borderColor: "#F1F4FF",
     borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 10,
+    marginBottom: getHeightPercent(5),
+    paddingHorizontal: getWidthPercent(1),
     borderRadius: 5,
+    backgroundColor: "#F1F4FF",
   },
-  pickerContainer: {
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 20,
-  },
-  picker: {
+  button: {
+    backgroundColor: "#1F41BB",
+    textAlign: "center",
+    alignItems: "center",
+    color: "white",
+    display: "flex",
+    justifyContent: "center",
     height: 50,
-    width: "100%",
+    borderRadius: 5,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "#1F41BB",
+    textAlign: "center",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  subtitle: {
+    fontSize: 18,
+    color: "#000",
+  },
+
+  loginText: {
+    fontSize: 20,
+    color: "white",
+    fontWeight: "bold",
+  },
+  registerContainer: {
+    display: "flex",
+    justifyContent: "center",
+    width: "100%",
+    alignItems: "center",
+    textAlign: "center",
+    paddingTop: getHeightPercent(10),
+    fontWeight: "bold",
   },
 });

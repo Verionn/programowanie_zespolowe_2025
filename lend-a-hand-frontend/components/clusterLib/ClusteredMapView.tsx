@@ -1,17 +1,13 @@
-import React, { useEffect, useState, useRef } from "react";
-import MapView, { Marker, Region } from "react-native-maps";
-import { View, StyleSheet, Text, ActivityIndicator } from "react-native";
-import SuperCluster, { PointFeature, ClusterFeature } from "supercluster";
+import React, {useEffect, useRef, useState} from "react";
+import MapView, {Marker, Region} from "react-native-maps";
+import {ActivityIndicator, StyleSheet, Text, View} from "react-native";
+import SuperCluster, {ClusterFeature, PointFeature} from "supercluster";
 import UserLocationButton from "./UserLocationButton";
-import {
-  calculateBBox,
-  returnMapZoom,
-  markerToGeoJSONFeature,
-} from "./mapHelpers";
-import { pinColors, tintColorLight, tintColorLightVariant } from "@/constants/Colors";
+import {calculateBBox, markerToGeoJSONFeature, returnMapZoom,} from "./mapHelpers";
+import {pinColors, tintColorLightVariant} from "@/constants/Colors";
 import ClusterMarker from "./ClusterMarker";
-import { getWidthPercent } from "@/utils/function/functions";
-import { useApiContext } from "@/utils/context/apiContext";
+import {getWidthPercent} from "@/utils/function/functions";
+import {useApiContext} from "@/utils/context/apiContext";
 import RefreshMap from "../refreshMap";
 
 export const ClusteredMapView = () => {
@@ -20,7 +16,7 @@ export const ClusteredMapView = () => {
     (PointFeature<any> | ClusterFeature<any>)[]
   >([]);
   const [region, setRegion] = useState<Region | null>(null);
-  const { emergencies, location } = useApiContext();
+  const { filteredEmergencies, location } = useApiContext();
   const [loading, setLoading] = useState(true);
 
   const [userLocation, setUserLocation] = useState<{
@@ -55,11 +51,11 @@ export const ClusteredMapView = () => {
     if (region) {
       const bbox = calculateBBox(region);
       const zoom = returnMapZoom(region, bbox, 1);
-      superClusterRef.current.load(emergencies.map(markerToGeoJSONFeature));
+      superClusterRef.current.load(filteredEmergencies.map(markerToGeoJSONFeature));
       const clusters = superClusterRef.current.getClusters(bbox, zoom);
       setClusters(clusters);
     }
-  }, [region, emergencies]);
+  }, [region, filteredEmergencies]);
 
   const onRegionChangeComplete = (newRegion: Region) => {
     setRegion(newRegion);

@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { StyleSheet, Pressable } from "react-native";
+import React from "react";
+import {Pressable, StyleSheet} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import MapView from "react-native-maps";
-import { useApiContext } from "@/utils/context/apiContext";
+import {useApiContext} from "@/utils/context/apiContext";
 
 interface UserLocationButtonProps {
   mapRef: React.RefObject<MapView>;

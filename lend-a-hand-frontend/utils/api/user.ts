@@ -1,38 +1,46 @@
-import { fetchData } from ".";
+import { RequestOptions } from "../types/CRUDTypes";
 
-async function deleteUser(userId: string) {
+
+async function apiRequest<T>({ method = 'GET', url, data, headers = {} }: RequestOptions): Promise<T> {
+    const config: RequestInit = {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers,
+        },
+        body: method !== 'GET' && data ? JSON.stringify(data) : undefined,
+    };
+
     try {
-      await fetchData<void>({
-        method: 'DELETE',
-        endpoint: `/user/${userId}`,
-      });
-      console.log('User deleted');
-    } catch (error) {
-      console.error('Delete error:', error);
+        const response = await fetch(url, config);
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'An error occurred');
+        }
+
+        
+        if (response.status !== 204) {
+            return await response.json();
+        }
+        return {} as T;
+    } catch (error: any) {
+        console.error(`Error in API request to ${url}:`, error.message);
+        throw error;
     }
-  }
-  
-  async function updateUserDetails(userId: string, userData: { name: string; email: string }) {
-    try {
-      const updateResponse = await fetchData<{ success: boolean }>({
-        method: 'PUT',
-        endpoint: `/user/${userId}`,
-        body: userData,
-      });
-      console.log('Update response:', updateResponse);
-    } catch (error) {
-      console.error('Update error:', error);
-    }
-  }
-  
-async function getUserData() {
-  try {
-    const user = await fetchData<{ name: string; email: string }>({
-      method: 'GET',
-      endpoint: '/user',
-    });
-    console.log(user);
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-  }
 }
+
+
+export const ApiService = {
+    get: <T>(url: string, headers?: { [key: string]: string }) => 
+        apiRequest<T>({ method: 'GET', url, headers }),
+    
+    post: <T>(url: string, data: any, headers?: { [key: string]: string }) => 
+        apiRequest<T>({ method: 'POST', url, data, headers }),
+    
+    put: <T>(url: string, data: any, headers?: { [key: string]: string }) => 
+        apiRequest<T>({ method: 'PUT', url, data, headers }),
+    
+    delete: <T>(url: string, headers?: { [key: string]: string }) => 
+        apiRequest<T>({ method: 'DELETE', url, headers }),
+};

@@ -1,37 +1,24 @@
-import { StyleSheet } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  withRepeat,
-  withSequence,
-} from 'react-native-reanimated';
+import { Link } from "expo-router";
+import { openBrowserAsync } from "expo-web-browser";
+import { type ComponentProps } from "react";
+import { Platform } from "react-native";
 
-import { ThemedText } from '@/components/ThemedText';
+type Props = Omit<ComponentProps<typeof Link>, "href"> & { href: string };
 
-export function HelloWave() {
-  const rotationAnimation = useSharedValue(0);
-
-  rotationAnimation.value = withRepeat(
-    withSequence(withTiming(25, { duration: 150 }), withTiming(0, { duration: 150 })),
-    4 // Run the animation 4 times
-  );
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${rotationAnimation.value}deg` }],
-  }));
-
+export function ExternalLink({ href, ...rest }: Props) {
   return (
-    <Animated.View style={animatedStyle}>
-      <ThemedText style={styles.text}>👋</ThemedText>
-    </Animated.View>
+    <Link
+      target="_blank"
+      {...rest}
+      href={href}
+      onPress={async (event) => {
+        if (Platform.OS !== "web") {
+          // Prevent the default behavior of linking to the default browser on native.
+          event.preventDefault();
+          // Open the link in an in-app browser.
+          await openBrowserAsync(href);
+        }
+      }}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  text: {
-    fontSize: 28,
-    lineHeight: 32,
-    marginTop: -6,
-  },
-});
