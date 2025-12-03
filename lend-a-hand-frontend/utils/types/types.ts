@@ -38,11 +38,12 @@ export type EmergencyTypesWithTranslationEnum = {
   label: string;
   value: string;
 };
+
 export const EmergencyTypesWithTranslation = [
-  { label: "Wsparcie przy sprzątaniu", value: "CLEANUP_ASSISTANCE" },
-  { label: "Dostawa jedzenia", value: "FOOD_SUPPLY" },
-  { label: "Dostawa wody", value: "WATER_SUPPLY" },
-  { label: "Dostawa leków", value: "MEDICINE_SUPPLY" },
-  { label: "Dostawa środków higienicznych", value: "HYGIENE_PRODUCTS" },
-  { label: "Wsparcie przy naprawach", value: "REPAIR_ASSISTANCE" },
+  { label: "Sprzątanie", value: "CLEANUP_ASSISTANCE" },
+  { label: "Jedzenie", value: "FOOD_SUPPLY" },
+  { label: "Woda", value: "WATER_SUPPLY" },
+  { label: "Leki", value: "MEDICINE_SUPPLY" },
+  { label: "Higiena", value: "HYGIENE_PRODUCTS" },
+  { label: "Naprawy", value: "REPAIR_ASSISTANCE" },
 ];
