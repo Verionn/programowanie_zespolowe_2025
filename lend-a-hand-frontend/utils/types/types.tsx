@@ -20,14 +20,12 @@ export type EmergencyType = {
   startDate: Date;
 };
 
-
-
 export type ItemNavigationType = {
   name: string;
   goTo: Href;
 };
 
-export type EmergencyTypeEnum =
+export type EmergencyTypesEnum =
   | "CLEANUP_ASSISTANCE"
   | "FOOD_SUPPLY"
   | "WATER_SUPPLY"
@@ -35,3 +33,16 @@ export type EmergencyTypeEnum =
   | "HYGIENE_PRODUCTS"
   | "REPAIR_ASSISTANCE"
   | "USER_LOCATION";
+
+export type EmergencyTypesWithTranslationEnum = {
+  label: string;
+  value: string;
+};
+export const EmergencyTypesWithTranslation = [
+  { label: "Wsparcie przy sprzątaniu", value: "CLEANUP_ASSISTANCE" },
+  { label: "Dostawa jedzenia", value: "FOOD_SUPPLY" },
+  { label: "Dostawa wody", value: "WATER_SUPPLY" },
+  { label: "Dostawa leków", value: "MEDICINE_SUPPLY" },
+  { label: "Dostawa środków higienicznych", value: "HYGIENE_PRODUCTS" },
+  { label: "Wsparcie przy naprawach", value: "REPAIR_ASSISTANCE" },
+];

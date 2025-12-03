@@ -1,6 +1,6 @@
-import React, { createContext, useState, ReactNode, useContext, useEffect } from "react";
+import React, {createContext, ReactNode, useEffect, useState} from "react";
 import * as Location from "expo-location";
-import { Platform } from "react-native";
+import {Platform} from "react-native";
 import * as Device from "expo-device";
 
 interface userContextType {

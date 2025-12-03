@@ -1,27 +1,28 @@
-import { FlatList, StyleSheet, View } from "react-native";
-import { ThemedView } from "@/components/ThemedView";
-import { useRouter } from "expo-router";
+import {FlatList, StyleSheet, View} from "react-native";
 import React from "react";
-import { ThemedBackground } from "@/components/ThemedBackground";
-import { MapViewContainer } from "@/components/MapViewContainer";
-import { ButtonNavigation } from "@/components/ButtonNavigation";
-import { TabNavigationData } from "@/constants/TabNavigation";
-import { getHeightPercent } from "@/utils/function/functions";
+import {ThemedBackground} from "@/components/ThemedBackground";
+import {ButtonNavigation} from "@/components/ButtonNavigation";
+import {getHeightPercent} from "@/utils/function/functions";
+import ClusteredMapView from "@/components/clusterLib/ClusteredMapView";
+import {EmergencyTypesWithTranslation, EmergencyTypesWithTranslationEnum} from "@/utils/types/types";
 
 export default function HomeScreen() {
   return (
     <ThemedBackground style={{ flex: 1 }} isSafeAreaNeeded={false}>
       <View style={styles.stepContainer}>
         <FlatList
-          data={TabNavigationData}
+          data={EmergencyTypesWithTranslation}
           renderItem={({ item }) => <ButtonNavigation item={item} />}
-          keyExtractor={(item) => item.name}
+          keyExtractor={(item) => item.label}
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.flatListContainer}
+          contentContainerStyle={[
+            styles.flatListContainer,
+            { paddingBottom: 50 },
+          ]}
           style={styles.flatList}
         />
-        <MapViewContainer />
+        <ClusteredMapView />
       </View>
     </ThemedBackground>
   );
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
   },
   flatListContainer: {
     paddingHorizontal: 10,
-    marginTop: getHeightPercent(20),
+    marginTop: getHeightPercent(5),
   },
   flatList: {
     position: "absolute",

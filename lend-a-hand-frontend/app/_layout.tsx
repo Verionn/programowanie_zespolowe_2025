@@ -1,18 +1,13 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
-import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import {DarkTheme, DefaultTheme, ThemeProvider,} from "@react-navigation/native";
+import {useFonts} from "expo-font";
+import {Stack} from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import React, {useEffect} from "react";
 import "react-native-reanimated";
 
-import { useColorScheme } from "@/hooks/useColorScheme";
-import React from "react";
-import { UserProvider } from "@/utils/context/userContext";
-import { ApiProvider } from "@/utils/context/apiContext";
+import {useColorScheme} from "@/hooks/useColorScheme";
+import {UserProvider} from "@/utils/context/userContext";
+import {ApiProvider} from "@/utils/context/apiContext";
 
 SplashScreen.preventAutoHideAsync();
 

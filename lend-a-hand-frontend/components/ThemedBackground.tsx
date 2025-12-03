@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  type ViewProps,
-  SafeAreaView,
-  Dimensions,
-} from "react-native";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import {Dimensions, SafeAreaView, StyleSheet, View, type ViewProps,} from "react-native";
+import {useThemeColor} from "@/hooks/useThemeColor";
 import LightBackground from "../assets/svg/background_bs.svg";
 
 export type ThemedBackgroundProps = ViewProps & {

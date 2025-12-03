@@ -1,17 +1,11 @@
 import React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Pressable,
-} from "react-native";
-import { Callout, Marker } from "react-native-maps";
-import { Point } from "geojson";
-import { pinColors, tintColorLight } from "@/constants/Colors";
-import { EmergencyTypeEnum } from "@/utils/types/types";
-import { useRouter } from "expo-router";
-import { translateEmergencyType } from "@/utils/function/functions";
+import {Pressable, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {Callout, Marker} from "react-native-maps";
+import {Point} from "geojson";
+import {pinColors, tintColorLight} from "@/constants/Colors";
+import {EmergencyTypesEnum} from "@/utils/types/types";
+import {useRouter} from "expo-router";
+import {translateEmergencyType} from "@/utils/function/functions";
 
 interface ClusterMarkerProps {
   geometry: Point;
@@ -81,7 +75,7 @@ const ClusterMarker: React.FC<ClusterMarkerProps> = ({
         }}
        // title={emergency.title}
        // description={translateEmergencyType(emergency.type as EmergencyTypeEnum)}
-        pinColor={pinColors[properties.type as EmergencyTypeEnum]}
+        pinColor={pinColors[properties.type as EmergencyTypesEnum]}
       >
         {/*<Callout >
           <View style={styles.calloutContainer}>
@@ -110,7 +104,7 @@ const ClusterMarker: React.FC<ClusterMarkerProps> = ({
               {`${emergency.description.slice(0, 20)}...`}
             </Text>
             <Text style={styles.calloutType}>
-              Typ: {translateEmergencyType(emergency.type as EmergencyTypeEnum)}
+              Typ: {translateEmergencyType(emergency.type as EmergencyTypesEnum)}
             </Text>
             <Text style={styles.detail}>
               Data rozpoczęcia:{" "}

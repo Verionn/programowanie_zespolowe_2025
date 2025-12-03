@@ -1,5 +1,5 @@
-import { EmergencyTypeEnum } from "@/utils/types/types";
-import { Platform } from "react-native";
+import {EmergencyTypesEnum} from "@/utils/types/types";
+import {Platform} from "react-native";
 import * as Device from "expo-device";
 
 export const getEndpoint = async () => {
@@ -11,9 +11,7 @@ export const getEndpoint = async () => {
   return url;
 };
 
-export const endpoint = "http://10.0.2.2:8080/"
-
-export const emergencyTypeTranslations: Record<EmergencyTypeEnum, string> = {
+export const emergencyTypeTranslations: Record<EmergencyTypesEnum, string> = {
   CLEANUP_ASSISTANCE: "Pomoc w sprzątaniu",
   FOOD_SUPPLY: "Dostawa żywności",
   WATER_SUPPLY: "Dostawa wody",
