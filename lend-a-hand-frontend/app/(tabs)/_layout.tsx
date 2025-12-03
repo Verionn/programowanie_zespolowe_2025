@@ -1,11 +1,11 @@
-import { Tabs } from "expo-router";
+import {Tabs} from "expo-router";
 import React from "react";
 
-import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { IconMoon } from "@/utils/Icons/iconMoon";
-import { iconMoonEnum } from "@/constants/Iconmoon";
+import {TabBarIcon} from "@/components/navigation/TabBarIcon";
+import {Colors} from "@/constants/Colors";
+import {useColorScheme} from "@/hooks/useColorScheme";
+import {IconMoon} from "@/utils/Icons/iconMoon";
+import {iconMoonEnum} from "@/constants/Iconmoon";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 export default function TabLayout() {
@@ -32,7 +32,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="EmergencyForm"
         options={{
-          title: "Dodaj krisis",
+          title: "Dodaj wydarzenie kryzysowe",
           headerShown:true,
           tabBarIcon: ({ color, focused }) => (
             <Icon name="add-circle" color={color} size={focused ? 28 : 24} />

@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, Pressable, Animated } from "react-native";
+import React, {useEffect, useRef, useState} from "react";
+import {Animated, Pressable, StyleSheet} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { useApiContext } from "@/utils/context/apiContext";
+import {useApiContext} from "@/utils/context/apiContext";
 
 const RefreshMap = () => {
   const { fetchEmergencies } = useApiContext();

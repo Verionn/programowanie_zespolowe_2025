@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  Pressable,
-} from "react-native";
-import { useLocalSearchParams } from "expo-router";
-import { ApiService } from "@/utils/api/CRUD";
-import { getEndpoint } from "@/constants/variables";
+import React, {useEffect, useState} from "react";
+import {ActivityIndicator, Pressable, StyleSheet, Text, View,} from "react-native";
+import {useLocalSearchParams} from "expo-router";
+import {ApiService} from "@/utils/api/CRUD";
+import {getEndpoint} from "@/constants/variables";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { translateEmergencyType } from "@/utils/function/functions";
-import { tintColorLight } from "@/constants/Colors";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedBackground } from "@/components/ThemedBackground";
+import {translateEmergencyType} from "@/utils/function/functions";
+import {tintColorLight} from "@/constants/Colors";
+import {SafeAreaView} from "react-native-safe-area-context";
+import {ThemedText} from "@/components/ThemedText";
+import {ThemedBackground} from "@/components/ThemedBackground";
+
 export default function EmergencyDetailsScreen() {
   const { id } = useLocalSearchParams();
   const [emergency, setEmergency] = useState<any | null>(null);
