@@ -122,6 +122,34 @@ paths:
         '409':
           description: An unknown error has occurred
 
+  /emergencies/{emergencyId}/singup:
+    post:
+      tags:
+        - Volunteer
+      summary: Sign up for emergency
+      operationId: signUpForEmergency
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpRequest'
+      parameters:
+        - in: path
+          name: emergencyId
+          schema:
+            type: UUID
+          required: true
+          description: Emergency UUID
+      responses:
+        '200':
+          description: Successfully signed up for emergency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignUpResponse'
+        '409':
+          description: An unknown error has occurred
+
 components:
   schemas:
     EmergencyType:
@@ -174,6 +202,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FetchEmergencyResponse'
+
+    SignUpRequest:
+      properties:
+        id:
+          type: string
+          example: "8096c0dd-64f0-49cf-9282-8dfbb788ff0a"
+
+    SignUpResponse:
+      properties:
+        id:
+          type: string
+          example: "8096c0dd-64f0-49cf-9282-8dfbb788ff0a"
+        userId:
+          type: string
+          example: "b4408dc3-a595-447b-aa18-e5c7a4718917"
+        emergencyId:
+          type: string
+          example: "9be5234f-6f31-49b8-b7bd-200d8a532911"
 
     CreateEmergencyRequest:
       properties:
