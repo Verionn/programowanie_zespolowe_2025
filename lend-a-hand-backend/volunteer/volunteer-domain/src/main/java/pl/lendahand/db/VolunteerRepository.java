@@ -10,4 +10,5 @@ public interface VolunteerRepository {
 
     Either<BaseError, VolunteerEntity> save(VolunteerEntity emergencyEntity);
 
+    Either<BaseError, Boolean> exists(UUID userId, UUID emergencyId);
 }

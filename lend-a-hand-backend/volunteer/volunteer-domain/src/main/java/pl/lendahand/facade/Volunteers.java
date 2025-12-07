@@ -21,4 +21,8 @@ public class Volunteers {
         return volunteerRepository.save(volunteerMapper.volunteerToVolunteerEntity(volunteer))
                 .map(volunteerMapper::volunteerEntityToVolunteer);
     }
+
+    public Either<BaseError, Boolean> checkStatus(UUID userId, UUID emergencyId) {
+        return volunteerRepository.exists(userId, emergencyId);
+    }
 }
