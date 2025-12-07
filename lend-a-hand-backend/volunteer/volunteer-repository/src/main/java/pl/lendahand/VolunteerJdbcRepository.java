@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import static org.springframework.dao.support.DataAccessUtils.singleResult;
 import static pl.lendahand.VolunteerQuery.*;
+import static pl.lendahand.VolunteerQuery.FIND_VOLUNTEER;
 
 public class VolunteerJdbcRepository implements VolunteerRepository {
 
@@ -38,6 +39,15 @@ public class VolunteerJdbcRepository implements VolunteerRepository {
                 .toEither()
                 .map(value -> volunteerEntity)
                 .mapLeft(error -> new VolunteerRepositoryError.FailedToSaveToDatabaseError());
+    }
+
+    @Override
+    public Either<BaseError, Boolean> exists(UUID userId, UUID emergencyId) {
+        return Try.of(() -> jdbcTemplate.queryForObject(FIND_VOLUNTEER, Boolean.class, userId, emergencyId))
+                .onFailure(error -> LOGGER.warn(FAILED_TO_FIND_VOLUNTEER))
+                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_FOUND_VOLUNTEER))
+                .toEither()
+                .mapLeft(error -> new VolunteerRepositoryError.FailedToFetchVolunteer());
     }
 
     private Try<Integer> attemptSave(VolunteerEntity volunteerEntity) {

@@ -36,4 +36,16 @@ public class VolunteerController {
                 );
     }
 
+    @GetMapping("/emergencies/{emergencyId}/status")
+    ResponseEntity<?> checkStatus(@PathVariable("emergencyId") UUID emergencyId, Principal principal) {
+
+        return volunteers.checkStatus(
+                UUID.fromString(principal.getName()),
+                emergencyId
+        ).fold(
+                VolunteerResponseSolver::resolveError,
+                response -> ResponseEntity.status(OK).body(response)
+        );
+    }
+
 }
