@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01_rename_emergency_id_column
+      author: Verion
+      changes:
+        - renameColumn:
+            tableName: volunteer_volunteer
+            oldColumnName: emergencyId
+            newColumnName: emergency_id

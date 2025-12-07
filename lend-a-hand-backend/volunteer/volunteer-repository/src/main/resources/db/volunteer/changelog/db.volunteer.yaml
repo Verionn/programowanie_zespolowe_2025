@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: db/volunteer/migration/00_init_volunteer_schema.yaml
+  - include:
+      file: db/volunteer/migration/01_rename_emergency_id_column.yaml

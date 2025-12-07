@@ -18,6 +18,7 @@
         <module>main-web</module>
         <module>emergency</module>
         <module>common</module>
+        <module>volunteer</module>
     </modules>
 
     <properties>
