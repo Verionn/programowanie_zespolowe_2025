@@ -36,6 +36,17 @@ public class VolunteerController {
                 );
     }
 
+    @DeleteMapping("/emergencies/{emergencyId}/resign")
+    ResponseEntity<?> resignFromEmergency(@PathVariable("emergencyId") UUID emergencyId, Principal principal) {
+        return volunteers.resign(
+                        UUID.fromString(principal.getName()),
+                        emergencyId)
+                .fold(
+                        VolunteerResponseSolver::resolveError,
+                        response -> ResponseEntity.status(OK).build()
+                );
+    }
+
     @GetMapping("/emergencies/{emergencyId}/status")
     ResponseEntity<?> checkStatus(@PathVariable("emergencyId") UUID emergencyId, Principal principal) {
 

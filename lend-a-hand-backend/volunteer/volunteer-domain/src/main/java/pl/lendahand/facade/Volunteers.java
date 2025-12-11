@@ -22,6 +22,10 @@ public class Volunteers {
                 .map(volunteerMapper::volunteerEntityToVolunteer);
     }
 
+    public Either<BaseError, UUID> resign(UUID userId, UUID emergencyId) {
+        return volunteerRepository.delete(userId, emergencyId);
+    }
+
     public Either<BaseError, Boolean> checkStatus(UUID userId, UUID emergencyId) {
         return volunteerRepository.exists(userId, emergencyId);
     }
