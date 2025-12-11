@@ -13,7 +13,6 @@ import java.util.UUID;
 
 import static org.springframework.dao.support.DataAccessUtils.singleResult;
 import static pl.lendahand.VolunteerQuery.*;
-import static pl.lendahand.VolunteerQuery.FIND_VOLUNTEER;
 
 public class VolunteerJdbcRepository implements VolunteerRepository {
 
@@ -41,6 +40,15 @@ public class VolunteerJdbcRepository implements VolunteerRepository {
                 .mapLeft(error -> new VolunteerRepositoryError.FailedToSaveToDatabaseError());
     }
 
+    public Either<BaseError, UUID> delete(UUID userId, UUID emergencyId) {
+        return attemptDelete(userId, emergencyId)
+                .onFailure(error -> LOGGER.warn(FAILED_TO_DELETE_VOLUNTEER, error))
+                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_DELETED_VOLUNTEER))
+                .toEither()
+                .map(value -> userId)
+                .mapLeft(error -> new VolunteerRepositoryError.FailedToDeleteToDatabaseError());
+    }
+
     @Override
     public Either<BaseError, Boolean> exists(UUID userId, UUID emergencyId) {
         return Try.of(() -> jdbcTemplate.queryForObject(FIND_VOLUNTEER, Boolean.class, userId, emergencyId))
@@ -56,5 +64,9 @@ public class VolunteerJdbcRepository implements VolunteerRepository {
                 volunteerEntity.userId(),
                 volunteerEntity.emergencyId()
         ));
+    }
+
+    private Try<Integer> attemptDelete(UUID userId, UUID emergencyId) {
+        return Try.of(() -> jdbcTemplate.update(DELETE_VOLUNTEER, userId, emergencyId));
     }
 }
