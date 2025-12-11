@@ -122,6 +122,25 @@ paths:
         '409':
           description: An unknown error has occurred
 
+  /emergencies/{emergencyId}/resign:
+    delete:
+      tags:
+        - Volunteer
+      summary: Resign from emergency
+      operationId: resignFromEmergency
+      parameters:
+        - in: path
+          name: emergencyId
+          schema:
+            type: UUID
+          required: true
+          description: Emergency UUID
+      responses:
+        '200':
+          description: Successfully resigned from emergency
+        '409':
+          description: An unknown error has occurred
+
   /emergencies/{emergencyId}/singup:
     post:
       tags:
