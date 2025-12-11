@@ -169,6 +169,30 @@ paths:
         '409':
           description: An unknown error has occurred
 
+  /emergencies/{emergencyId}/status:
+    get:
+      tags:
+        - Volunteer
+      summary: get volunteering status
+      operationId: volunteerStatus
+      parameters:
+        - in: path
+          name: emergencyId
+          schema:
+            type: UUID
+          required: true
+          description: Emergency UUID
+      responses:
+        '200':
+          description: Successfully checked user status
+          content:
+            application/json:
+              schema:
+                type: boolean
+                example: true
+        '409':
+          description: An unknown error has occurred
+
 components:
   schemas:
     EmergencyType:
