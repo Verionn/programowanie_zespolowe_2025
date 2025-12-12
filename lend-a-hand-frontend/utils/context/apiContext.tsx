@@ -1,7 +1,7 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { ApiService } from "@/utils/api/CRUD";
-import { getEndpoint } from "@/constants/variables";
-import { EmergencyType, EmergencyTypesWithTranslationEnum } from "@/utils/types/types";
+import React, {createContext, useCallback, useContext, useEffect, useState} from "react";
+import {ApiService} from "@/utils/api/CRUD";
+import {getEndpoint} from "@/constants/variables";
+import {EmergencyType, EmergencyTypesWithTranslation} from "@/utils/types/types";
 import * as Location from "expo-location";
 
 interface ApiContextProps {
@@ -11,24 +11,23 @@ interface ApiContextProps {
     fetchEmergencies: () => Promise<void>;
     updateLocation: (location: Location.LocationObject | null) => Promise<void>;
     addEmergency: (newEmergency: EmergencyType) => Promise<void>;
-    setFilter: (filter: EmergencyTypesWithTranslationEnum | null) => void;
+    selectedCategories: String[];
+    setSelectedCategories: React.Dispatch<React.SetStateAction<String[]>>;
 }
 
 const ApiContext = createContext<ApiContextProps | undefined>(undefined);
 
-export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
     const [emergencies, setEmergencies] = useState<EmergencyType[]>([]);
     const [filteredEmergencies, setFilteredEmergencies] = useState<EmergencyType[]>([]);
-    const [selectedFilter, setSelectedFilter] = useState<EmergencyTypesWithTranslationEnum | null>(
-        null
-    );
+    const [selectedCategories, setSelectedCategories] = useState<String[]>([]);
     const [location, setLocation] = useState<Location.LocationObject | null>(null);
 
     useEffect(() => {
         let locationSubscription: Location.LocationSubscription | null = null;
 
         async function startWatchingLocation() {
-            const { status } = await Location.requestForegroundPermissionsAsync();
+            const {status} = await Location.requestForegroundPermissionsAsync();
             if (status !== "granted") {
                 console.log("Permission to access location was denied");
                 return;
@@ -62,6 +61,7 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             );
             console.log("Emergencies fetched ...");
             setEmergencies(response.emergencies);
+            setSelectedCategories([])
         } catch (error) {
             console.error("Error fetching emergencies:", error);
         }
@@ -89,14 +89,16 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
 
     useEffect(() => {
-        if (selectedFilter) {
-            setFilteredEmergencies(
-                emergencies.filter((emergency) => emergency.type === selectedFilter.value)
-            );
+
+        if (selectedCategories.length === 0) {
+            setFilteredEmergencies(emergencies)
         } else {
-            setFilteredEmergencies(emergencies);
+            setFilteredEmergencies(
+                emergencies.filter((emergency) => selectedCategories.includes(emergency.type))
+            );
         }
-    }, [emergencies, selectedFilter]);
+
+    }, [selectedCategories, emergencies]);
 
     return (
         <ApiContext.Provider
@@ -107,7 +109,8 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                 fetchEmergencies,
                 addEmergency,
                 updateLocation,
-                setFilter: setSelectedFilter,
+                setSelectedCategories,
+                selectedCategories
             }}
         >
             {children}

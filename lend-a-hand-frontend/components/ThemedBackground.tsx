@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     },
     overlay: {
         flex: 1,
-        paddingTop: 40,
+        paddingTop: 10,
         zIndex: 1,
     },
     overlayNotSafe: {

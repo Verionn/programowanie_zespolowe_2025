@@ -4,27 +4,27 @@ import {ThemedBackground} from "@/components/ThemedBackground";
 import {ButtonNavigation} from "@/components/ButtonNavigation";
 import {getHeightPercent} from "@/utils/function/functions";
 import ClusteredMapView from "@/components/clusterLib/ClusteredMapView";
-import {EmergencyTypesWithTranslation, EmergencyTypesWithTranslationEnum} from "@/utils/types/types";
+import {EmergencyTypesWithTranslation} from "@/utils/types/types";
 
 export default function HomeScreen() {
   return (
-    <ThemedBackground style={{ flex: 1 }} isSafeAreaNeeded={false}>
-      <View style={styles.stepContainer}>
-        <FlatList
-          data={EmergencyTypesWithTranslation}
-          renderItem={({ item }) => <ButtonNavigation item={item} />}
-          keyExtractor={(item) => item.label}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={[
-            styles.flatListContainer,
-            { paddingBottom: 50 },
-          ]}
-          style={styles.flatList}
-        />
-        <ClusteredMapView />
-      </View>
-    </ThemedBackground>
+      <ThemedBackground style={{ flex: 1 }} isSafeAreaNeeded={false}>
+        <View style={styles.stepContainer}>
+          <FlatList
+              data={EmergencyTypesWithTranslation}
+              renderItem={({ item }) => <ButtonNavigation item={item} />}
+              keyExtractor={(item) => item.label}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={[
+                styles.flatListContainer,
+                { paddingBottom: 50 },
+              ]}
+              style={styles.flatList}
+          />
+          <ClusteredMapView />
+        </View>
+      </ThemedBackground>
   );
 }
 
