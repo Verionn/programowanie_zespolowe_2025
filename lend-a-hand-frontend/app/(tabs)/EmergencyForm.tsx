@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
-import {SafeAreaView} from "react-native-safe-area-context";
 import {ThemedText} from "@/components/ThemedText";
 import {Picker} from "@react-native-picker/picker";
 import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";

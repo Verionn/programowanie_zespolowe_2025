@@ -110,10 +110,11 @@ export const ClusteredMapView = () => {
                   coordinate={userLocation}
                   title="Moja lokalizacja"
                   pinColor={pinColors.USER_LOCATION}
+                  key="user-location"
               />
           )}
 
-          {clusters.map((cluster) => {
+          {clusters.map((cluster, index) => {
             const { geometry, properties } = cluster;
             if (!geometry.coordinates || geometry.coordinates.length !== 2) {
               console.error("Invalid cluster coordinates:", cluster);
@@ -151,6 +152,7 @@ export const ClusteredMapView = () => {
             } else {
               return (
                   <Marker
+                      key={`marker-${index}-${properties.id || properties.title}`}
                       coordinate={{
                         latitude: geometry.coordinates[1],
                         longitude: geometry.coordinates[0],
