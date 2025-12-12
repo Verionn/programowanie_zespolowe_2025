@@ -57,7 +57,7 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({children})
     const fetchEmergencies = useCallback(async () => {
         try {
             const response = await ApiService.get<{ emergencies: EmergencyType[] }>(
-                `${await getEndpoint()}emergencies`
+                `${await getEndpoint()}/emergencies`
             );
             console.log("Emergencies fetched ...");
             setEmergencies(response.emergencies);
@@ -77,7 +77,7 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({children})
         async (newEmergency: EmergencyType) => {
             try {
                 await ApiService.post<{ emergencies: EmergencyType[] }>(
-                    `${await getEndpoint()}emergencies`,
+                    `${await getEndpoint()}/emergencies`,
                     newEmergency
                 );
                 await fetchEmergencies();

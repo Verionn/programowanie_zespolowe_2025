@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.example.com';
+import {getEndpoint} from "@/constants/variables";
 
 type RequestOptions = {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -8,15 +8,17 @@ type RequestOptions = {
 };
 
 export async function fetchData<T>({
-  method,
-  endpoint,
-  headers = {
-    'Content-Type': 'application/json',
-  },
-  body,
-}: RequestOptions): Promise<T> {
-  const url = `${BASE_URL}${endpoint}`;
-  
+                                     method,
+                                     endpoint,
+                                     headers = {
+                                       'Content-Type': 'application/json',
+                                     },
+                                     body,
+                                   }: RequestOptions): Promise<T> {
+  const url = `${await getEndpoint()}${endpoint}`;
+
+  console.log(`Fetching data from ${url}`);
+
   const options: RequestInit = {
     method,
     headers,

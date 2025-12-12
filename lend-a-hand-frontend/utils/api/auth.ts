@@ -1,46 +1,16 @@
-import { RequestOptions } from "../types/CRUDTypes";
+import {fetchData} from ".";
+import {token} from "@/constants/variables";
+import {saveSecureItem} from "@/utils/function/functions";
 
-
-async function apiRequest<T>({ method = 'GET', url, data, headers = {} }: RequestOptions): Promise<T> {
-    const config: RequestInit = {
-        method,
-        headers: {
-            'Content-Type': 'application/json',
-            ...headers,
-        },
-        body: method !== 'GET' && data ? JSON.stringify(data) : undefined,
-    };
-
+export default async function loginUser(email: string, password: string) {
     try {
-        const response = await fetch(url, config);
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'An error occurred');
-        }
-
-        
-        if (response.status !== 204) {
-            return await response.json();
-        }
-        return {} as T;
-    } catch (error: any) {
-        console.error(`Error in API request to ${url}:`, error.message);
-        throw error;
+        const loginResponse = await fetchData<{ token: string }>({
+            method: 'POST',
+            endpoint: `/login`,
+            body: { email, password },
+        });
+        await saveSecureItem(token, loginResponse.token);
+    } catch (error) {
+        console.error('Login error:', error);
     }
 }
-
-
-export const ApiService = {
-    get: <T>(url: string, headers?: { [key: string]: string }) => 
-        apiRequest<T>({ method: 'GET', url, headers }),
-    
-    post: <T>(url: string, data: any, headers?: { [key: string]: string }) => 
-        apiRequest<T>({ method: 'POST', url, data, headers }),
-    
-    put: <T>(url: string, data: any, headers?: { [key: string]: string }) => 
-        apiRequest<T>({ method: 'PUT', url, data, headers }),
-    
-    delete: <T>(url: string, headers?: { [key: string]: string }) => 
-        apiRequest<T>({ method: 'DELETE', url, headers }),
-};
