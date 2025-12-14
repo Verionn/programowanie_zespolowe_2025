@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: 00_init_user_schema
+      author:
+      changes:
+        - createTable:
+            tableName: user_user
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  autoIncrement: false
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: text
+              - column:
+                  name: last_name
+                  type: text
+              - column:
+                  name: password
+                  type: text
+              - column:
+                  name: email
+                  type: text
+              - column:
+                  name: phone_number
+                  type: text
+              - column:
+                  name: role
+                  type: text
+              - column:
+                  name: created_at
+                  type: Timestamp
