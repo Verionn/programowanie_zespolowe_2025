@@ -193,6 +193,43 @@ paths:
         '409':
           description: An unknown error has occurred
 
+  /registration:
+    post:
+      tags:
+        - authentication
+      summary: Register a new user
+      operationId: registration
+      $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        '400':
+          description: Bad request
+        '409':
+          description: An error has occurred
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  details:
+                    type: string
+              examples:
+                emailExists:
+                  summary: Email already registered
+                  value:
+                    error: "A user with this email address already exists"
+                unknownError:
+                  summary: An unknown error has occurred
+                  value:
+                    error: "An unknown error has occurred"
+
 components:
   schemas:
     EmergencyType:
@@ -347,3 +384,52 @@ components:
           type: string
           format: date-time
           example: "2024-11-12T14:30:00Z"
+
+    RegisterRequest:
+      properties:
+        id:
+          type: string
+          example: "8096c0dd-64f0-49cf-9282-8dfbb788ff7a"
+        firstName:
+          type: string
+          example: "Jan"
+        lastName:
+          type: string
+          example: "Nowak"
+        password:
+          type: string
+          example: "12345"
+        email:
+          type: string
+          example: "xyz@example.com"
+        phoneNumber:
+          type: string
+          example: "123456789"
+
+    RegisterResponse:
+      properties:
+        id:
+          type: string
+          example: "8096c0dd-64f0-49cf-9282-8dfbb788ff7a"
+        firstName:
+          type: string
+          example: "Jan"
+        lastName:
+          type: string
+          example: "Nowak"
+        password:
+          type: string
+          example: "12345"
+        email:
+          type: string
+          example: "xyz@example.com"
+        phoneNumber:
+          type: string
+          example: "123456789"
+        role:
+          type: string
+          example: "USER"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2024-11-14T18:40:30.4512961"
