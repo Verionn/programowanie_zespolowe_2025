@@ -19,6 +19,7 @@
         <module>emergency</module>
         <module>common</module>
         <module>volunteer</module>
+        <module>user</module>
     </modules>
 
     <properties>
