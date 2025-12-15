@@ -60,7 +60,7 @@ paths:
     put:
       tags:
         - Emergency
-      summary: Update emergency
+      summary: Update existing emergency details
       operationId: updateEmergency
       requestBody:
         content:
@@ -170,6 +170,15 @@ paths:
           description: An unknown error has occurred
 
   /emergencies/{emergencyId}/status:
+    get:
+      description: New endpoint
+      responses:
+        200:
+          description: New response
+          content:
+            application/json:
+              schema:
+                : 
     get:
       tags:
         - Volunteer
