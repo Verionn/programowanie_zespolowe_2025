@@ -40,10 +40,11 @@ public class EmergencyController {
 
     @PutMapping("/emergencies/{emergencyId}")
     ResponseEntity<?> updateEmergency(@PathVariable("emergencyId") UUID emergencyId, @Valid @RequestBody UpdateEmergencyRequest updateEmergencyRequest) {
-        return emergencies.updateEmergency(emergencyId, emergencyControllerMapper.updateEmergencyRequestToEmergency(updateEmergencyRequest)).fold(
-                EmergencyResponseSolver::resolveError,
-                response -> ResponseEntity.status(OK).build()
-        );
+        return emergencies.updateEmergency(emergencyId, emergencyControllerMapper.updateEmergencyRequestToEmergency(updateEmergencyRequest))
+                .fold(
+                        EmergencyResponseSolver::resolveError,
+                        response -> ResponseEntity.status(OK).build()
+                );
     }
 
     @GetMapping("/emergencies")
