@@ -14,6 +14,5 @@ public interface EmergencyRepository {
     Either<BaseError, EmergencyEntity> find(UUID emergencyId);
     Either<BaseError, List<EmergencyEntity>> find();
     Either<BaseError, UUID> delete(UUID emergencyId);
-
     Either<BaseError, UUID> update(UUID emergencyId, EmergencyEntity emergencyEntity);
 }
