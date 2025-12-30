@@ -26,13 +26,13 @@ export type ItemNavigationType = {
 };
 
 export type EmergencyTypesEnum =
-    | "CLEANUP_ASSISTANCE"
-    | "FOOD_SUPPLY"
-    | "WATER_SUPPLY"
-    | "MEDICINE_SUPPLY"
-    | "HYGIENE_PRODUCTS"
-    | "REPAIR_ASSISTANCE"
-    | "USER_LOCATION";
+  | "CLEANUP_ASSISTANCE"
+  | "FOOD_SUPPLY"
+  | "WATER_SUPPLY"
+  | "MEDICINE_SUPPLY"
+  | "HYGIENE_PRODUCTS"
+  | "REPAIR_ASSISTANCE"
+  | "USER_LOCATION";
 
 export type EmergencyTypesWithTranslationEnum = {
   label: string;
@@ -47,3 +47,4 @@ export const EmergencyTypesWithTranslation = [
   { label: "Higiena", value: "HYGIENE_PRODUCTS" },
   { label: "Naprawy", value: "REPAIR_ASSISTANCE" },
 ];
+

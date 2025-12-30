@@ -10,6 +10,9 @@ export const getEndpoint = async () => {
   return url;
 };
 
+export const HTTP_STATUS_CREATED = 201;
+export const HTTP_STATUS_OK = 200;
+
 export const token = `token`;
 
 export const emergencyTypeTranslations: Record<EmergencyTypesEnum, string> = {

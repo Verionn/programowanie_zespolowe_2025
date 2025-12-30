@@ -1,8 +1,9 @@
 import React, {createContext, useCallback, useContext, useEffect, useState} from "react";
 import {ApiService} from "@/utils/api/CRUD";
-import {getEndpoint} from "@/constants/variables";
-import {EmergencyType, EmergencyTypesWithTranslation} from "@/utils/types/types";
+import {getEndpoint, token} from "@/constants/variables";
+import {EmergencyType} from "@/utils/types/types";
 import * as Location from "expo-location";
+import {getSecureItem} from "@/utils/function/functions";
 
 interface ApiContextProps {
     emergencies: EmergencyType[];
@@ -56,11 +57,16 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({children})
 
     const fetchEmergencies = useCallback(async () => {
         try {
+            if (!token) throw new Error("No token provided");
+            const savedToken: string | null = await getSecureItem(token);
+            console.log("Retrieved Token:", savedToken);
+            if (!savedToken || savedToken === "") throw Error("Invalid token");
+
             const response = await ApiService.get<{ emergencies: EmergencyType[] }>(
-                `${await getEndpoint()}/emergencies`
+                `${await getEndpoint()}/emergencies`, {Authorization: `Bearer ${savedToken}`}
             );
             console.log("Emergencies fetched ...");
-            setEmergencies(response.emergencies);
+            setEmergencies(response.data.emergencies);
             setSelectedCategories([])
         } catch (error) {
             console.error("Error fetching emergencies:", error);
@@ -76,9 +82,15 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({children})
     const addEmergency = useCallback(
         async (newEmergency: EmergencyType) => {
             try {
+                if (!token) throw new Error("No token provided");
+                const savedToken: string | null = await getSecureItem(token);
+                console.log("Retrieved Token:", savedToken);
+                if (!savedToken || savedToken === "") throw Error("Invalid token");
+
                 await ApiService.post<{ emergencies: EmergencyType[] }>(
                     `${await getEndpoint()}/emergencies`,
-                    newEmergency
+                    newEmergency,
+                    {Authorization: `Bearer ${savedToken}`}
                 );
                 await fetchEmergencies();
             } catch (error) {

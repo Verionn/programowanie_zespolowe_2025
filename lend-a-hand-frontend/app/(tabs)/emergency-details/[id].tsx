@@ -11,7 +11,7 @@ import { ApiService } from "@/utils/api/CRUD";
 import { getEndpoint, token } from "@/constants/variables";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {
-  getSecureItem,
+  getSecureItem, getToken,
   getUserId,
   translateEmergencyType,
 } from "@/utils/function/functions";
@@ -32,15 +32,26 @@ export default function EmergencyDetailsScreen() {
   const [loading, setLoading] = useState(true);
   const [reloadTrigger, setReloadTrigger] = useState<number>(0);
   const iconSize = 30;
+
   useEffect(() => {
     const fetchEmergencyDetails = async () => {
       try {
+        console.log("Starting fetchEmergencyDetails...");
+        const gotToken = await getToken(token);
+        if (!gotToken) throw new Error("No valid token found");
+
+        const endpoint = await getEndpoint();
+        console.log("Endpoint:", endpoint);
+
         const response = await ApiService.get<{ emergency: EmergencyType }>(
-            `${await getEndpoint()}/emergencies/${id}`
+            `${endpoint}/emergencies/${id}`,
+            { Authorization: `Bearer ${gotToken}` }
         );
-        setEmergency(response);
+
+        console.log("Fetched emergency:", response.data);
+        setEmergency(response.data);
       } catch (error) {
-        console.error("Błąd podczas pobierania szczegółów zdarzenia:", error);
+        console.error("Error fetching emergency details:", error);
       } finally {
         setLoading(false);
       }
@@ -50,7 +61,7 @@ export default function EmergencyDetailsScreen() {
       fetchEmergencyDetails();
     }
   }, [id, reloadTrigger]);
-
+  
   useEffect(() => {
     const fetchEmergencyStatus = async () => {
       if (token) {
@@ -86,72 +97,72 @@ export default function EmergencyDetailsScreen() {
   }
 
   return (
-      <ThemedBackground style={{ flex: 1 }} isSafeAreaNeeded={false}>
-        <SafeAreaView>
-          <View style={styles.container}>
-            <Text style={styles.title}>{emergency.title}</Text>
-            <Text style={styles.description}>{emergency.description}</Text>
+    <ThemedBackground style={{ flex: 1 }} isSafeAreaNeeded={false}>
+      <SafeAreaView>
+        <View style={styles.container}>
+          <Text style={styles.title}>{emergency.title}</Text>
+          <Text style={styles.description}>{emergency.description}</Text>
 
-            <View style={styles.detailRow}>
-              <Icon name="category" size={iconSize} color={tintColorLight} />
-              <Text style={styles.detail}>
-                Typ: {translateEmergencyType(emergency.type)}
-              </Text>
-            </View>
-
-            <View style={styles.detailRow}>
-              <Icon
-                  name="account-circle"
-                  size={iconSize}
-                  color={tintColorLight}
-              />
-              <Text style={styles.detail}>
-                szukający pomocy: Patryk Lewandoski
-              </Text>
-            </View>
-
-            <View style={styles.detailRow}>
-              <Icon
-                  name="toggle-on"
-                  size={iconSize}
-                  color={emergency.status ? "green" : "red"}
-              />
-              <Text style={styles.detail}>
-                Status: {emergency.status ? "Wykonane" : "Niewykonane"}
-              </Text>
-            </View>
-
-            <View style={styles.detailRow}>
-              <Icon name="location-on" size={iconSize} color={tintColorLight} />
-              <Text style={styles.detail}>
-                Lokalizacja: {emergency.latitude.toFixed(4)},{" "}
-                {emergency.longitude.toFixed(4)}
-              </Text>
-            </View>
-
-            <View style={styles.detailRow}>
-              <Icon name="event" size={iconSize} color={tintColorLight} />
-              <Text style={styles.detail}>
-                Data rozpoczęcia:{" "}
-                {new Date(emergency.startDate).toLocaleDateString()}
-              </Text>
-            </View>
+          <View style={styles.detailRow}>
+            <Icon name="category" size={iconSize} color={tintColorLight} />
+            <Text style={styles.detail}>
+              Typ: {translateEmergencyType(emergency.type)}
+            </Text>
           </View>
-          <View style={styles.buttonContainer}>
-            <Pressable
-                style={{
-                  backgroundColor: isJoined ? "red" : "#1F41BB",
-                  ...styles.button,
-                }}
-                onPress={handleTaskAction}
-            >
-              <ThemedText style={styles.text}>
-                {!isJoined ? "Przyjmij Zadanie" : "Rezygnuj Zadanie"}
-              </ThemedText>
-            </Pressable>
+
+          <View style={styles.detailRow}>
+            <Icon
+              name="account-circle"
+              size={iconSize}
+              color={tintColorLight}
+            />
+            <Text style={styles.detail}>
+              szukający pomocy: Patryk Lewandoski
+            </Text>
           </View>
-        </SafeAreaView>
-      </ThemedBackground>
+
+          <View style={styles.detailRow}>
+            <Icon
+              name="toggle-on"
+              size={iconSize}
+              color={emergency.status ? "green" : "red"}
+            />
+            <Text style={styles.detail}>
+              Status: {emergency.status ? "Wykonane" : "Niewykonane"}
+            </Text>
+          </View>
+
+          <View style={styles.detailRow}>
+            <Icon name="location-on" size={iconSize} color={tintColorLight} />
+            <Text style={styles.detail}>
+              Lokalizacja: {emergency.latitude.toFixed(4)},{" "}
+              {emergency.longitude.toFixed(4)}
+            </Text>
+          </View>
+
+          <View style={styles.detailRow}>
+            <Icon name="event" size={iconSize} color={tintColorLight} />
+            <Text style={styles.detail}>
+              Data rozpoczęcia:{" "}
+              {new Date(emergency.startDate).toLocaleDateString()}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Pressable
+            style={{
+              backgroundColor: isJoined ? "red" : "#1F41BB",
+              ...styles.button,
+            }}
+            onPress={handleTaskAction}
+          >
+            <ThemedText style={styles.text}>
+              {!isJoined ? "Przyjmij Zadanie" : "Rezygnuj Zadanie"}
+            </ThemedText>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    </ThemedBackground>
   );
 }
 

@@ -12,6 +12,7 @@ web-build/
 
 package-lock.json
 yarn.lock
+android
 
 # macOS
 .DS_Store

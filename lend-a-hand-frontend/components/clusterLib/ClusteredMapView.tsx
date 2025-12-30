@@ -16,7 +16,7 @@ import {
   returnMapZoom,
 } from "./mapHelpers";
 import { pinColors, tintColorLightVariant } from "@/constants/Colors";
-import ClusterMarker from "./ClusterMaker";
+import ClusterMarker from "./ClusterMarker";
 import { getWidthPercent } from "@/utils/function/functions";
 import { useApiContext } from "@/utils/context/apiContext";
 import { translateEmergencyType } from "@/utils/function/functions";
@@ -27,7 +27,7 @@ import { Link } from "expo-router";
 export const ClusteredMapView = () => {
   const mapRef = useRef<MapView>(null);
   const [clusters, setClusters] = useState<
-      (PointFeature<any> | ClusterFeature<any>)[]
+    (PointFeature<any> | ClusterFeature<any>)[]
   >([]);
   const [region, setRegion] = useState<Region | null>(null);
   const { filteredEmergencies, location } = useApiContext();
@@ -40,7 +40,7 @@ export const ClusteredMapView = () => {
   } | null>(null);
 
   const superClusterRef = useRef(
-      new SuperCluster({ radius: getWidthPercent(6.5), maxZoom: 16 })
+    new SuperCluster({ radius: getWidthPercent(6.5), maxZoom: 16 })
   );
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export const ClusteredMapView = () => {
       const bbox = calculateBBox(region);
       const zoom = returnMapZoom(region, bbox, 1);
       superClusterRef.current.load(
-          filteredEmergencies.map(markerToGeoJSONFeature)
+        filteredEmergencies.map(markerToGeoJSONFeature)
       );
       const clusters = superClusterRef.current.getClusters(bbox, zoom);
       setClusters(clusters);
@@ -88,127 +88,127 @@ export const ClusteredMapView = () => {
 
   if (loading) {
     return (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#0000ff" />
-          <Text style={styles.loadingText}>Loading map...</Text>
-        </View>
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text style={styles.loadingText}>Loading map...</Text>
+      </View>
     );
   }
 
   return (
-      <View style={{ flex: 1 }}>
-        <MapView
-            ref={mapRef}
-            initialRegion={region!}
-            onRegionChangeComplete={onRegionChangeComplete}
-            style={styles.map}
-            showsUserLocation
-            showsMyLocationButton
-        >
-          {userLocation && (
-              <Marker
-                  coordinate={userLocation}
-                  title="Moja lokalizacja"
-                  pinColor={pinColors.USER_LOCATION}
-                  key="user-location"
-              />
-          )}
-
-          {clusters.map((cluster, index) => {
-            const { geometry, properties } = cluster;
-            if (!geometry.coordinates || geometry.coordinates.length !== 2) {
-              console.error("Invalid cluster coordinates:", cluster);
-              return null;
-            }
-
-            const isCluster = properties.cluster;
-            if (isCluster) {
-              return (
-                  <ClusterMarker
-                      key={`cluster-${properties.cluster_id}`}
-                      geometry={geometry}
-                      properties={properties}
-                      clusterColor={tintColorLightVariant}
-                      onPress={() => {
-                        const zoomLevel = Math.min(
-                            superClusterRef.current.getClusterExpansionZoom(
-                                properties.cluster_id
-                            ),
-                            16
-                        );
-
-                        mapRef.current?.animateToRegion(
-                            {
-                              latitude: geometry.coordinates[1],
-                              longitude: geometry.coordinates[0],
-                              latitudeDelta: region!.latitudeDelta / 2,
-                              longitudeDelta: region!.longitudeDelta / 2,
-                            },
-                            500
-                        );
-                      }}
-                  />
-              );
-            } else {
-              return (
-                  <Marker
-                      key={`marker-${index}-${properties.id || properties.title}`}
-                      coordinate={{
-                        latitude: geometry.coordinates[1],
-                        longitude: geometry.coordinates[0],
-                      }}
-                      onPress={() => ShowEmergencyDetails(properties)}
-                      title={properties.title}
-                      description={translateEmergencyType(
-                          properties.type as EmergencyTypesEnum
-                      )}
-                      pinColor={pinColors[properties.type as EmergencyTypesEnum]}
-                  />
-              );
-            }
-          })}
-        </MapView>
-        <UserLocationButton mapRef={mapRef} />
-        <RefreshMap />
-
-        {emergency && (
-            <Modal
-                key={emergency.id}
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
-            >
-              <View style={styles.modalOverlay}>
-                <View style={styles.modalContainer}>
-                  <Text style={styles.modalTitle}>{emergency.title}</Text>
-                  <Text style={styles.modalDescription}>
-                    {`${emergency.description.slice(0, 100)}...`}
-                  </Text>
-                  <Text style={styles.modalType}>
-                    Typ:{" "}
-                    {translateEmergencyType(emergency.type as EmergencyTypesEnum)}
-                  </Text>
-                  <Text style={styles.modalDetail}>
-                    Data rozpoczęcia:{" "}
-                    {new Date(emergency.startDate).toLocaleDateString()}
-                  </Text>
-                  <View style={styles.viewMoreButton}>
-                    <Link href={`/(tabs)/emergency-details/${emergency.id}`}>
-                      Więcej szczegołów
-                    </Link>
-                  </View>
-                  <Pressable
-                      style={styles.closeButton}
-                      onPress={() => setModalVisible(false)}
-                  >
-                    <Text style={styles.closeText}>Zamknij</Text>
-                  </Pressable>
-                </View>
-              </View>
-            </Modal>
+    <View style={{ flex: 1 }}>
+      <MapView
+        ref={mapRef}
+        initialRegion={region!}
+        onRegionChangeComplete={onRegionChangeComplete}
+        style={styles.map}
+        showsUserLocation
+        showsMyLocationButton
+      >
+        {userLocation && (
+          <Marker
+            coordinate={userLocation}
+            title="Moja lokalizacja"
+            pinColor={pinColors.USER_LOCATION}
+            key="user-location"
+          />
         )}
-      </View>
+
+        {clusters.map((cluster, index) => {
+          const { geometry, properties } = cluster;
+          if (!geometry.coordinates || geometry.coordinates.length !== 2) {
+            console.error("Invalid cluster coordinates:", cluster);
+            return null;
+          }
+
+          const isCluster = properties.cluster;
+          if (isCluster) {
+            return (
+              <ClusterMarker
+                key={`cluster-${properties.cluster_id}`}
+                geometry={geometry}
+                properties={properties}
+                clusterColor={tintColorLightVariant}
+                onPress={() => {
+                  const zoomLevel = Math.min(
+                    superClusterRef.current.getClusterExpansionZoom(
+                      properties.cluster_id
+                    ),
+                    16
+                  );
+
+                  mapRef.current?.animateToRegion(
+                    {
+                      latitude: geometry.coordinates[1],
+                      longitude: geometry.coordinates[0],
+                      latitudeDelta: region!.latitudeDelta / 2,
+                      longitudeDelta: region!.longitudeDelta / 2,
+                    },
+                    500
+                  );
+                }}
+              />
+            );
+          } else {
+            return (
+              <Marker
+                key={`marker-${index}-${properties.id || properties.title}`}
+                coordinate={{
+                  latitude: geometry.coordinates[1],
+                  longitude: geometry.coordinates[0],
+                }}
+                onPress={() => ShowEmergencyDetails(properties)}
+                title={properties.title}
+                description={translateEmergencyType(
+                  properties.type as EmergencyTypesEnum
+                )}
+                pinColor={pinColors[properties.type as EmergencyTypesEnum]}
+              />
+            );
+          }
+        })}
+      </MapView>
+      <UserLocationButton mapRef={mapRef} />
+      <RefreshMap />
+
+      {emergency && (
+        <Modal
+          key={emergency.id}
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>{emergency.title}</Text>
+              <Text style={styles.modalDescription}>
+                {`${emergency.description.slice(0, 100)}...`}
+              </Text>
+              <Text style={styles.modalType}>
+                Typ:{" "}
+                {translateEmergencyType(emergency.type as EmergencyTypesEnum)}
+              </Text>
+              <Text style={styles.modalDetail}>
+                Data rozpoczęcia:{" "}
+                {new Date(emergency.startDate).toLocaleDateString()}
+              </Text>
+              <View style={styles.viewMoreButton}>
+                <Link href={`/(tabs)/emergency-details/${emergency.id}`}>
+                  Więcej szczegołów
+                </Link>
+              </View>
+              <Pressable
+                style={styles.closeButton}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.closeText}>Zamknij</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+      )}
+    </View>
   );
 };
 
