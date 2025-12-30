@@ -28,14 +28,14 @@ export const ButtonNavigation: React.FC<TabNavigationType> = ({item}) => {
                 onPress={handlePress}
                 style={[
                     styles.button,
-                    {backgroundColor: isActive || selectedCategories.length === 0 ? "#FFFFFF" : "transparent"},
-                    {borderColor: isActive || selectedCategories.length === 0 ? "#FFFFFF" : "#000000"},
+                    {backgroundColor: isActive || selectedCategories.length === 0 ? "#000000B3" : "#FCC203C3"},
+                    {borderColor: isActive || selectedCategories.length === 0 ? "#000000" : "#000000"},
                 ]}
             >
                 <Text
                     style={[
                         styles.buttonText,
-                        {color: isActive || selectedCategories.length === 0 ? "#000000" : "#000000"},
+                        {color: isActive || selectedCategories.length === 0 ? "#FFFFFF" : "#000000"},
                     ]}
                 >
                     {item.label}
