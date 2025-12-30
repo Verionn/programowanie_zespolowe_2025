@@ -16,11 +16,16 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.wikcis.lendahand",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.joki004.lendahandfrontend"
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAvpWJEE21ucVGQKh_0yTj2Cqw-0kK-QSY"
+        }
+      }
     },
     "web": {
       "bundler": "metro",

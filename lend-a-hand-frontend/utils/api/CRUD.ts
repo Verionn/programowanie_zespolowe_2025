@@ -1,11 +1,11 @@
-import { RequestOptions } from "../types/CRUDTypes";
+import {RequestOptions} from "../types/CRUDTypes";
 
 async function apiRequest<T>({
                                  method = "GET",
                                  url,
                                  data,
                                  headers = {},
-                             }: RequestOptions): Promise<T> {
+                             }: RequestOptions): Promise<{ status: number; data: T }> {
     const config: RequestInit = {
         method,
         headers: {
@@ -20,17 +20,18 @@ async function apiRequest<T>({
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => null);
-            throw new Error(errorData.message || "An error occurred");
+            throw new Error(errorData?.message || "An error occurred");
         }
 
         if (
-            response.status == 204 ||
+            response.status === 204 ||
             response.headers.get("content-length") === "0"
         ) {
-            return {} as T;
+            return { status: response.status, data: {} as T };
         }
 
-        return await response.json();
+        const responseData: T = await response.json();
+        return { status: response.status, data: responseData };
     } catch (error: any) {
         console.error(`Error in API request to ${url}:`, error.message);
         throw error;

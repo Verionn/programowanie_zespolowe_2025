@@ -7,6 +7,7 @@ import {faker} from "@faker-js/faker";
 import {useApiContext} from "@/utils/context/apiContext";
 import {EmergencyTypesWithTranslation} from "@/utils/types/types";
 import {ThemedBackground} from "@/components/ThemedBackground";
+import {useRouter} from "expo-router";
 
 export default function AddEmergencyForm() {
     const {addEmergency} = useApiContext();
@@ -15,21 +16,34 @@ export default function AddEmergencyForm() {
     const [type, setType] = useState("");
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
-    const [dateTime, setDateTime] = useState(new Date());
+    const [dateTime, setDateTime] = useState<any>(new Date());
+
+    const router = useRouter();
 
     const handleValueChange = (itemValue: string) => {
         setType(itemValue);
     };
 
-    const openDateTimePicker = (mode: any, display: any) => {
+    const openDateTimePicker = (mode: "date" | "time", display: "calendar" | "clock") => {
         DateTimePickerAndroid.open({
             value: dateTime,
             onChange: (event, selectedDate) => {
                 if (selectedDate) {
-                    setDateTime(selectedDate);
-                    if (mode === 'date') {
-                        openDateTimePicker('time', 'clock');
-                    }
+                    setDateTime((prev: string | number | Date) => {
+                        if (mode === "date") {
+                            const newDate = new Date(prev);
+                            newDate.setFullYear(selectedDate.getFullYear());
+                            newDate.setMonth(selectedDate.getMonth());
+                            newDate.setDate(selectedDate.getDate());
+                            openDateTimePicker("time", "clock");
+                            return newDate;
+                        } else {
+                            const newDate = new Date(prev);
+                            newDate.setHours(selectedDate.getHours());
+                            newDate.setMinutes(selectedDate.getMinutes());
+                            return newDate;
+                        }
+                    });
                 }
             },
             mode: mode,
@@ -69,17 +83,12 @@ export default function AddEmergencyForm() {
         try {
             await addEmergency(newEmergency);
             Alert.alert("Sukces", "Zdarzenie dodane pomyślnie!");
+
+
         } catch (error) {
             Alert.alert("Błąd", "Nie udało się dodać zdarzenia.");
             console.error("Error in API request:", error);
         }
-    };
-
-    const formatDateTime = (date: Date) => {
-        return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-        })}`;
     };
 
     return (
@@ -149,8 +158,15 @@ export default function AddEmergencyForm() {
 
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Data i godzina rozpoczęcia</Text>
-                    <Pressable onPress={() => openDateTimePicker('date', 'calendar')} style={styles.input}>
-                        <Text>{formatDateTime(dateTime)}</Text>
+                    <Pressable
+                        onPress={() => openDateTimePicker("date", "calendar")}
+                        style={styles.input}
+                    >
+                        <Text>
+                            {dateTime
+                                ? `${dateTime.toLocaleDateString()} ${dateTime.toLocaleTimeString()}`
+                                : "Wybierz datę i godzinę"}
+                        </Text>
                     </Pressable>
                 </View>
 
