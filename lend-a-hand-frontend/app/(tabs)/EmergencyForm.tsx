@@ -1,54 +1,71 @@
-import React, {useState} from "react";
-import {Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
+import React, {useRef, useState} from "react";
+import {Alert, Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
 import {ThemedText} from "@/components/ThemedText";
 import {Picker} from "@react-native-picker/picker";
-import {DateTimePickerAndroid} from "@react-native-community/datetimepicker";
 import {faker} from "@faker-js/faker";
 import {useApiContext} from "@/utils/context/apiContext";
 import {EmergencyTypesWithTranslation} from "@/utils/types/types";
 import {ThemedBackground} from "@/components/ThemedBackground";
 import {useRouter} from "expo-router";
+import MapView, {LatLng, Marker} from "react-native-maps";
+import * as Location from "expo-location";
 
 export default function AddEmergencyForm() {
     const {addEmergency} = useApiContext();
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [type, setType] = useState("");
-    const [latitude, setLatitude] = useState("");
-    const [longitude, setLongitude] = useState("");
-    const [dateTime, setDateTime] = useState<any>(new Date());
+    const [latitude, setLatitude] = useState<string>("");
+    const [longitude, setLongitude] = useState<string>("");
+    const [dateTime, setDateTime] = useState(new Date());
+    const [markerLocation, setMarkerLocation] = useState<LatLng | null>(null);
 
     const router = useRouter();
+    const mapViewRef = useRef<MapView | null>(null);
 
-    const handleValueChange = (itemValue: string) => {
-        setType(itemValue);
-    };
-
-    const openDateTimePicker = (mode: "date" | "time", display: "calendar" | "clock") => {
-        DateTimePickerAndroid.open({
-            value: dateTime,
-            onChange: (event, selectedDate) => {
-                if (selectedDate) {
-                    setDateTime((prev: string | number | Date) => {
-                        if (mode === "date") {
-                            const newDate = new Date(prev);
-                            newDate.setFullYear(selectedDate.getFullYear());
-                            newDate.setMonth(selectedDate.getMonth());
-                            newDate.setDate(selectedDate.getDate());
-                            openDateTimePicker("time", "clock");
-                            return newDate;
-                        } else {
-                            const newDate = new Date(prev);
-                            newDate.setHours(selectedDate.getHours());
-                            newDate.setMinutes(selectedDate.getMinutes());
-                            return newDate;
-                        }
-                    });
-                }
+    function navigateWithAnimation(lat: number, lng: number) {
+        mapViewRef.current?.animateToRegion(
+            {
+                latitude: lat,
+                longitude: lng,
+                latitudeDelta: 0.0015,
+                longitudeDelta: 0.00121,
             },
-            mode: mode,
-            display: display,
-        });
+            1000
+        );
+    }
+
+    async function setMarkerToUserLocation() {
+        try {
+            const {status} = await Location.requestForegroundPermissionsAsync();
+            if (status !== "granted") {
+                Alert.alert("Błąd", "Nie uzyskano dostępu do lokalizacji.");
+                return;
+            }
+
+            const userLocation = await Location.getCurrentPositionAsync({});
+            const userCoords: LatLng = {
+                latitude: userLocation.coords.latitude,
+                longitude: userLocation.coords.longitude,
+            };
+
+            setMarkerLocation(userCoords);
+            setLatitude(userCoords.latitude.toString());
+            setLongitude(userCoords.longitude.toString());
+            navigateWithAnimation(userCoords.latitude, userCoords.longitude);
+        } catch (error) {
+            console.error("Error getting user location:", error);
+            Alert.alert("Błąd", "Nie udało się uzyskać lokalizacji.");
+        }
+    }
+
+    const handleMapLongPressPress = (event: {
+        nativeEvent: { coordinate: { latitude: number; longitude: number } };
+    }) => {
+        const {latitude, longitude} = event.nativeEvent.coordinate;
+        setMarkerLocation({latitude, longitude});
+        setLatitude(latitude.toString());
+        setLongitude(longitude.toString());
     };
 
     const handleSubmit = async () => {
@@ -83,8 +100,6 @@ export default function AddEmergencyForm() {
         try {
             await addEmergency(newEmergency);
             Alert.alert("Sukces", "Zdarzenie dodane pomyślnie!");
-
-
         } catch (error) {
             Alert.alert("Błąd", "Nie udało się dodać zdarzenia.");
             console.error("Error in API request:", error);
@@ -94,7 +109,7 @@ export default function AddEmergencyForm() {
     return (
         <ThemedBackground style={{flex: 1}}>
             <ScrollView style={styles.container} keyboardShouldPersistTaps={"handled"}>
-                <View style={styles.inputContainer}>
+                <View style={styles.container}>
                     <Text style={styles.label}>Tytuł</Text>
                     <TextInput
                         style={styles.input}
@@ -105,7 +120,7 @@ export default function AddEmergencyForm() {
                 </View>
 
 
-                <View style={styles.inputContainer}>
+                <View style={styles.container}>
                     <Text style={styles.label}>Opis</Text>
                     <TextInput
                         style={styles.input}
@@ -115,12 +130,12 @@ export default function AddEmergencyForm() {
                     />
                 </View>
 
-                <View style={styles.inputContainer}>
+                <View style={styles.container}>
                     <Text style={styles.label}>Typ</Text>
                     <View style={styles.pickerContainer}>
                         <Picker
                             selectedValue={type}
-                            onValueChange={handleValueChange}
+                            onValueChange={(value) => setType(value)}
                             style={{maxHeight: 50, minHeight: 50}}
                         >
                             {EmergencyTypesWithTranslation.map((option) => (
@@ -134,40 +149,33 @@ export default function AddEmergencyForm() {
                     </View>
                 </View>
 
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Szerokość geograficzna</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Wpisz szerokość geograficzną"
-                        value={latitude}
-                        onChangeText={setLatitude}
-                        keyboardType="numeric"
-                    />
-                </View>
-
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Długość geograficzna</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Wpisz długość geograficzną"
-                        value={longitude}
-                        onChangeText={setLongitude}
-                        keyboardType="numeric"
-                    />
-                </View>
-
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Data i godzina rozpoczęcia</Text>
-                    <Pressable
-                        onPress={() => openDateTimePicker("date", "calendar")}
-                        style={styles.input}
+                <View style={styles.mapContainer}>
+                    <MapView
+                        ref={mapViewRef}
+                        style={{flex: 1}}
+                        initialRegion={{
+                            latitude: 51.7592,
+                            longitude: 19.456,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421,
+                        }}
+                        onLongPress={(e) => handleMapLongPressPress(e)}
                     >
-                        <Text>
-                            {dateTime
-                                ? `${dateTime.toLocaleDateString()} ${dateTime.toLocaleTimeString()}`
-                                : "Wybierz datę i godzinę"}
-                        </Text>
-                    </Pressable>
+                        {markerLocation && (
+                            <Marker
+                                coordinate={markerLocation}
+                                title="Twoja lokalizacja"
+                                description="Twoja lokalizacja"
+                            />
+                        )}
+                    </MapView>
+                </View>
+
+                <View style={styles.buttonContainer}>
+                    <Button
+                        title="Ustaw moją lokalizację"
+                        onPress={setMarkerToUserLocation}
+                    />
                 </View>
 
                 <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
@@ -217,7 +225,16 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "bold",
     },
-    inputContainer: {
-        minHeight: 80,
-    }
+    mapContainer: {
+        flex: 1,
+        marginVertical: "5%",
+        minWidth: 350,
+        minHeight: 400,
+        alignSelf: "center",
+    },
+    buttonContainer: {
+        marginHorizontal: "5%",
+        marginBottom: "10%",
+        alignSelf: "center",
+    },
 });
