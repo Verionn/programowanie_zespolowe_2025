@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 00_init_user_schema
-      author:
+      author: Michauek
       changes:
         - createTable:
             tableName: user_user

@@ -18,5 +18,4 @@ public interface UserDomainError extends BaseError {
             this(USER_ALREADY_EXISTS);
         }
     }
-
 }

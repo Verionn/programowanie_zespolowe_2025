@@ -2,9 +2,7 @@ package pl.lendahand;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.lendahand.facade.Users;
 import pl.lendahand.model.RegisterRequest;
 import pl.lendahand.model.User;
@@ -14,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 public class UserController {
@@ -36,6 +35,17 @@ public class UserController {
                         UserResponseSolver::resolveError,
                         response -> ResponseEntity.status(CREATED).body(
                                 userControllerMapper.userToRegisterResponse(response)
+                        )
+                );
+    }
+
+    @GetMapping("/user/{userId}")
+    ResponseEntity<?> getUser(@Valid @PathVariable UUID userId) {
+        return users.getUser(userId)
+                .fold(
+                        UserResponseSolver::resolveError,
+                        response -> ResponseEntity.status(OK).body(
+                                userControllerMapper.userToUserResponse(response)
                         )
                 );
     }

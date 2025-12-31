@@ -14,4 +14,6 @@ public interface UserControllerMapper {
     User registerRequestBodyToUser(RegisterRequest createUserRequest, UUID id, User.Role role, LocalDateTime createdAt);
 
     RegisterResponse userToRegisterResponse(User user);
+
+    UserResponse userToUserResponse(User user);
 }
