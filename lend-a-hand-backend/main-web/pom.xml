@@ -59,6 +59,17 @@
             <version>${postgresql.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>pl.lendahand</groupId>
+            <artifactId>emergency-web</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>pl.lendahand</groupId>
             <artifactId>emergency-domain</artifactId>
             <version>0.0.1-SNAPSHOT</version>
@@ -68,11 +79,7 @@
             <artifactId>emergency-repository</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>pl.lendahand</groupId>
             <artifactId>user-domain</artifactId>
@@ -81,6 +88,27 @@
         <dependency>
             <groupId>pl.lendahand</groupId>
             <artifactId>user-repository</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.lendahand</groupId>
+            <artifactId>user-web</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pl.lendahand</groupId>
+            <artifactId>volunteer-domain</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.lendahand</groupId>
+            <artifactId>volunteer-repository</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.lendahand</groupId>
+            <artifactId>volunteer-web</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

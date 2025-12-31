@@ -7,6 +7,8 @@ import pl.lendahand.db.UserRepository;
 import pl.lendahand.error.UserDomainError;
 import pl.lendahand.model.User;
 
+import java.util.UUID;
+
 public class Users {
 
     private final UserRepository userRepository;
@@ -25,5 +27,13 @@ public class Users {
 
         return userRepository.save(USER_MAPPER.userToUserEntity(user), passwordEncoder)
                 .map(response -> user);
+    }
+
+    public Either<BaseError, User> getUser(UUID userId) {
+        if (!userRepository.exists(userId)) {
+            return Either.left(new UserDomainError.UserNotFound());
+        }
+
+        return Either.right(USER_MAPPER.userEntityToUser(userRepository.load(userId)));
     }
 }
