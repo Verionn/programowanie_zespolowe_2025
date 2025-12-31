@@ -90,8 +90,8 @@ export default function AddEmergencyForm() {
             type,
             status: false,
             userId: faker.string.uuid(),
-            latitude: parseFloat(latitude),
-            longitude: parseFloat(longitude),
+            latitude: parseFloat(latitude).toFixed(6),
+            longitude: parseFloat(longitude).toFixed(6),
             startDate: dateTime,
         };
 
@@ -100,6 +100,9 @@ export default function AddEmergencyForm() {
         try {
             await addEmergency(newEmergency);
             Alert.alert("Sukces", "Zdarzenie dodane pomyślnie!");
+            router.push({
+                pathname: "/HomeScreen",
+            });
         } catch (error) {
             Alert.alert("Błąd", "Nie udało się dodać zdarzenia.");
             console.error("Error in API request:", error);
