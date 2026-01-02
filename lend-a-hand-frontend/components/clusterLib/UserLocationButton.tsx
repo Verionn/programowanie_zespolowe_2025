@@ -15,8 +15,8 @@ const UserLocationButton: React.FC<UserLocationButtonProps> = ({ mapRef }) => {
       mapRef.current.animateToRegion({
         latitude: location.coords.latitude,
           longitude: location.coords.longitude,
-          latitudeDelta: 3,
-          longitudeDelta: 3,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.1,
       }, 1000);
     }
   };

@@ -100,7 +100,7 @@ export default function AddEmergencyForm() {
         try {
             await addEmergency(newEmergency);
             Alert.alert("Sukces", "Zdarzenie dodane pomyślnie!");
-            router.push({
+            router.navigate({
                 pathname: "/HomeScreen",
             });
         } catch (error) {

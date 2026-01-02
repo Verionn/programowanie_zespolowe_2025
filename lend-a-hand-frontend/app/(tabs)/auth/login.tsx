@@ -29,7 +29,7 @@ export default function LoginScreen() {
             if (res) {
                 alert("Logowanie przebiegło pomyślnie!");
 
-                router.push({
+                router.navigate({
                     pathname: "/HomeScreen"
                 });
             } else alert("Email lub Hasło są niepoprawne!");

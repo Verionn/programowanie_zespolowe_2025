@@ -32,7 +32,7 @@ export default function RegisterScreen() {
             console.log(res);
             if (res === HTTP_STATUS_CREATED) {
                 alert("Rejestracja przebiegła pomyślnie");
-                router.push({
+                router.navigate({
                     pathname: "/(tabs)/auth/login"
                 });
             } else alert("Niepoprawne wartości!");
