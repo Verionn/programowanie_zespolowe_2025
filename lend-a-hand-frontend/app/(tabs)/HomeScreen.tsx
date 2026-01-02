@@ -1,5 +1,5 @@
 import {FlatList, StyleSheet, View} from "react-native";
-import React from "react";
+import React, {useEffect} from "react";
 import {ThemedBackground} from "@/components/ThemedBackground";
 import {ButtonNavigation} from "@/components/ButtonNavigation";
 import {getHeightPercent} from "@/utils/function/functions";
@@ -7,6 +7,12 @@ import ClusteredMapView from "@/components/clusterLib/ClusteredMapView";
 import {EmergencyTypesWithTranslation} from "@/utils/types/types";
 
 export default function HomeScreen() {
+
+    useEffect(() => {
+        console.log("HOME MOUNT");
+        return () => console.log("HOME UNMOUNT");
+    }, []);
+
 
     return (
         <ThemedBackground style={{flex: 1}} isSafeAreaNeeded={false}>

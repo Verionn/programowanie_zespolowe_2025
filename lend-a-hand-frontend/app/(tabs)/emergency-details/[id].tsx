@@ -84,7 +84,7 @@ export default function EmergencyDetailsScreen() {
                     latitudeDelta: 0.03,
                     longitudeDelta: 0.01,
                 },
-                500
+                100
             );
         }
     }, [markerLocation]);
