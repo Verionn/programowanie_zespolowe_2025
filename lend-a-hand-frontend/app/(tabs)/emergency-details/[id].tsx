@@ -145,14 +145,6 @@ export default function EmergencyDetailsScreen() {
                     </View>
 
                     <View style={styles.detailRow}>
-                        <Icon name="location-on" size={iconSize} color={tintColorLight}/>
-                        <Text style={styles.detail}>
-                            Lokalizacja: {emergency.latitude.toFixed(4)},{" "}
-                            {emergency.longitude.toFixed(4)}
-                        </Text>
-                    </View>
-
-                    <View style={styles.detailRow}>
                         <Icon name="event" size={iconSize} color={tintColorLight}/>
                         <Text style={styles.detail}>
                             Data rozpoczęcia:{" "}
