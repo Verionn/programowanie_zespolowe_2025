@@ -171,15 +171,6 @@ paths:
 
   /emergencies/{emergencyId}/status:
     get:
-      description: New endpoint
-      responses:
-        200:
-          description: New response
-          content:
-            application/json:
-              schema:
-                : 
-    get:
       tags:
         - Volunteer
       summary: get volunteering status
@@ -238,6 +229,31 @@ paths:
                   summary: An unknown error has occurred
                   value:
                     error: "An unknown error has occurred"
+
+  /login:
+    post:
+      tags:
+        - authentication
+      summary: Login
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '201':
+          description: User logged successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Provided email or password are incorrect
+        '409':
+          description: An unknown error has occurred
 
 components:
   schemas:
@@ -442,3 +458,18 @@ components:
           type: string
           format: date-time
           example: "2024-11-14T18:40:30.4512961"
+
+    LoginRequest:
+      properties:
+        email:
+          type: string
+          example: "xyz@example.com"
+        password:
+          type: string
+          example: "12345"
+
+    LoginResponse:
+      properties:
+        token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ4eXpAZXhhbXBsZS5jb20iLCJpYXQiOjE3MzE2MDc2MzMsImV4cCI6MTczMTYwOTA3M30.ocG1F1UzvxM4R45J38qk8rcI28MFlzP6G3Fm4qTy-Eg"
