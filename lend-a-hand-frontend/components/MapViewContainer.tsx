@@ -45,18 +45,18 @@ export const MapViewContainer = () => {
                 let loc = await Location.getCurrentPositionAsync({});
                 setLocation(JSON.stringify(loc));
 
-                const {latitude, longitude} = loc.coords;
-                setRegion({
-                    latitude,
-                    longitude,
-                    latitudeDelta: 0.5,
-                    longitudeDelta: 0.5,
-                });
-                setUserLocation({latitude, longitude});
-            } catch (error) {
-                console.error("Error fetching data or location:", error);
-            }
-        };
+        const { latitude, longitude } = loc.coords;
+        setRegion({
+          latitude,
+          longitude,
+          latitudeDelta: 0.5,
+          longitudeDelta: 0.5,
+        });
+        setUserLocation({ latitude, longitude });
+      } catch (error) {
+        console.log("Error fetching data or location:");
+      }
+    };
 
         fetchDataAndLocation();
     }, []);

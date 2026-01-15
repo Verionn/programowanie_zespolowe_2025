@@ -14,7 +14,7 @@ export default function AddEmergencyForm() {
     const {addEmergency} = useApiContext();
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [type, setType] = useState("");
+    const [type, setType] = useState("CLEANUP_ASSISTANCE");
     const [latitude, setLatitude] = useState<string>("");
     const [longitude, setLongitude] = useState<string>("");
     const [dateTime, setDateTime] = useState(new Date());
@@ -54,7 +54,7 @@ export default function AddEmergencyForm() {
             setLongitude(userCoords.longitude.toString());
             navigateWithAnimation(userCoords.latitude, userCoords.longitude);
         } catch (error) {
-            console.error("Error getting user location:", error);
+            console.log("Error getting user location:");
             Alert.alert("Błąd", "Nie udało się uzyskać lokalizacji.");
         }
     }
@@ -105,7 +105,7 @@ export default function AddEmergencyForm() {
             });
         } catch (error) {
             Alert.alert("Błąd", "Nie udało się dodać zdarzenia.");
-            console.error("Error in API request:", error);
+            console.log("Error in API request:");
         }
     };
 

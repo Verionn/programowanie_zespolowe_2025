@@ -12,7 +12,7 @@ export async function loginUser(email: string, password: string) {
 
         return loginResponse.data.token;
     } catch (error) {
-        console.error('Login error:', error);
+        console.log('Login error:');
         return null
     }
 }
@@ -37,13 +37,13 @@ export async function registerUser(
         if (response.status === HTTP_STATUS_CREATED) {
             console.log("Registration successful!");
         } else {
-            console.warn("Registration not successful. Status:", response.status);
+            console.log("Registration not successful. Status:", response.status);
         }
 
         return response.status;
     } catch
         (error) {
-        console.error('Registration error:', error);
+        console.log('Registration error:');
         return null;
     }
 }

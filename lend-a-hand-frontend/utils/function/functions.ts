@@ -49,7 +49,7 @@ export const checkToken = async (token: string): Promise<boolean | null> => {
 
         return true;
     } catch (e: any) {
-        console.error("Error validating token:", e.message);
+        console.log("Error validating token:", e.message);
         return false;
     }
 };
@@ -66,7 +66,7 @@ export const getUserId = async (token: string): Promise<string | null> => {
         }
         return decodedToken.sub;
     } catch (e: any) {
-        console.error("Error validating token:", e.message);
+        console.log("Error validating token:", e.message);
         return null;
     }
 };

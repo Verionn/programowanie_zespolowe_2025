@@ -69,7 +69,7 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({children})
             setEmergencies(response.data.emergencies);
             setSelectedCategories([])
         } catch (error) {
-            console.error("Error fetching emergencies:", error);
+            console.log("Error fetching emergencies:");
         }
     }, []);
 
@@ -94,7 +94,7 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({children})
                 );
                 await fetchEmergencies();
             } catch (error) {
-                console.error("Error adding emergency:", error);
+                console.log("Error adding emergency:");
             }
         },
         [fetchEmergencies]

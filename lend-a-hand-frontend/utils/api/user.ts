@@ -25,7 +25,7 @@ async function apiRequest<T>({ method = 'GET', url, data, headers = {} }: Reques
         }
         return {} as T;
     } catch (error: any) {
-        console.error(`Error in API request to ${url}:`, error.message);
+        console.log(`Error in API request to ${url}:`, error.message);
         throw error;
     }
 }
