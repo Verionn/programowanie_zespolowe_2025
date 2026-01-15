@@ -8,10 +8,10 @@ export default function TabLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack >
-        <Stack.Screen name="login" options={{headerShown:false}}/>
-        <Stack.Screen name="register" options={{headerShown:false}}/>
-      </Stack>
+        <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="login" />
+            <Stack.Screen name="register" />
+        </Stack>
     </ThemeProvider>
   );
 }

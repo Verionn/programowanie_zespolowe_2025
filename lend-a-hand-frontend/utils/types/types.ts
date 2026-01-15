@@ -39,6 +39,14 @@ export type EmergencyTypesWithTranslationEnum = {
   value: string;
 };
 
+export interface UserType {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+}
+
 export const EmergencyTypesWithTranslation = [
   { label: "Sprzątanie", value: "CLEANUP_ASSISTANCE" },
   { label: "Jedzenie", value: "FOOD_SUPPLY" },

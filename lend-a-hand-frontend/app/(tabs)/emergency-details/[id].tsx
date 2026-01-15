@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View,} from "react-native";
 import {useLocalSearchParams} from "expo-router";
 import {ApiService} from "@/utils/api/CRUD";
@@ -12,6 +12,7 @@ import {ThemedBackground} from "@/components/ThemedBackground";
 import {checkVolunteeringStatus, handleVolunteering,} from "@/utils/api/volunteer";
 import {EmergencyType} from "@/utils/types/types";
 import MapView, {LatLng, Marker} from "react-native-maps";
+import {UserContext} from "@/utils/context/userContext";
 
 export default function EmergencyDetailsScreen() {
     const {id} = useLocalSearchParams();
@@ -21,9 +22,22 @@ export default function EmergencyDetailsScreen() {
     const [reloadTrigger, setReloadTrigger] = useState<number>(0);
     const mapViewRef = useRef<MapView | null>(null);
     const [markerLocation, setMarkerLocation] = useState<LatLng | null>(null);
+    const userContext = useContext(UserContext);
 
+    if (!userContext) {
+        throw new Error("UserContext not available");
+    }
+
+    const { user, fetchUser } = userContext;
 
     const iconSize = 30;
+
+    useEffect(() => {
+        if (emergency?.userId) {
+            fetchUser(emergency.userId);
+        }
+    }, [emergency]);
+
 
     useEffect(() => {
         const fetchEmergencyDetails = async () => {
@@ -129,18 +143,8 @@ export default function EmergencyDetailsScreen() {
                             color={tintColorLight}
                         />
                         <Text style={styles.detail}>
-                            szukający pomocy: Patryk Lewandoski
-                        </Text>
-                    </View>
-
-                    <View style={styles.detailRow}>
-                        <Icon
-                            name="toggle-on"
-                            size={iconSize}
-                            color={emergency.status ? "green" : "red"}
-                        />
-                        <Text style={styles.detail}>
-                            Status: {emergency.status ? "Wykonane" : "Niewykonane"}
+                            szukający pomocy:{" "}
+                            {user ? `${user.firstName} ${user.lastName}` : "Ładowanie..."}
                         </Text>
                     </View>
 
@@ -178,7 +182,7 @@ export default function EmergencyDetailsScreen() {
                             onPress={handleTaskAction}
                         >
                             <ThemedText style={styles.text}>
-                                {!isJoined ? "Przyjmij Zadanie" : "Rezygnuj Zadanie"}
+                                {!isJoined ? "Dołącz do wydarzenia" : "Rezygnuj z wydarzenia"}
                             </ThemedText>
                         </Pressable>
                     </View>

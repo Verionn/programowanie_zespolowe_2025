@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Alert, Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
 import {ThemedText} from "@/components/ThemedText";
 import {Picker} from "@react-native-picker/picker";
@@ -6,7 +6,7 @@ import {faker} from "@faker-js/faker";
 import {useApiContext} from "@/utils/context/apiContext";
 import {EmergencyTypesWithTranslation} from "@/utils/types/types";
 import {ThemedBackground} from "@/components/ThemedBackground";
-import {useRouter} from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import MapView, {LatLng, Marker} from "react-native-maps";
 import * as Location from "expo-location";
 
@@ -108,6 +108,34 @@ export default function AddEmergencyForm() {
             console.log("Error in API request:");
         }
     };
+
+    const { lat, lng } = useLocalSearchParams<{ lat?: string; lng?: string }>();
+
+    useEffect(() => {
+        if (lat && lng) {
+            const parsedLat = parseFloat(lat);
+            const parsedLng = parseFloat(lng);
+
+            setMarkerLocation({
+                latitude: parsedLat,
+                longitude: parsedLng,
+            });
+
+            setLatitude(parsedLat.toString());
+            setLongitude(parsedLng.toString());
+
+            mapViewRef.current?.animateToRegion(
+                {
+                    latitude: parsedLat,
+                    longitude: parsedLng,
+                    latitudeDelta: 0.005,
+                    longitudeDelta: 0.005,
+                },
+                800
+            );
+        }
+    }, [lat, lng]);
+
 
     return (
         <ThemedBackground style={{flex: 1}}>

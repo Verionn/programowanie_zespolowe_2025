@@ -21,6 +21,7 @@ export default function TabLayout() {
                     headerShown: false,
                     title: "Zaloguj się",
                     tabBarItemStyle: {display: "none"},
+                    tabBarStyle: { display: "none" },
                 }}
             />
             <Tabs.Screen
@@ -60,6 +61,7 @@ export default function TabLayout() {
                 options={{
                     title: "Zaloguj się",
                     tabBarItemStyle: {display: "none"},
+                    tabBarStyle: { display: "none" },
                 }}
             />
         </Tabs>
