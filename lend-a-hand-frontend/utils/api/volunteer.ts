@@ -38,7 +38,7 @@ export const handleVolunteering = async (id: string, signup: boolean) => {
       alert("Pomyślnie zrezygnowałeś/aś z wydarzenia.");
     }
   } catch (e: any) {
-    console.error("Error while joining the event:", e.message);
+    console.log("Error while joining the event:", e.message);
     console.log(`Error: ${e.message}`);
     alert("Musisz być zalogowanie");
   }
@@ -68,7 +68,7 @@ export const checkVolunteeringStatus = async (id: string): Promise<boolean> => {
 
     return response.data;
   } catch (e: any) {
-    console.error("Error while getting the status:", e.message);
+    console.log("Error while getting the status:", e.message);
     return false;
   }
 };

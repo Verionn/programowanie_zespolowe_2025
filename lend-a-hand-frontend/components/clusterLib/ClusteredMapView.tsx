@@ -92,6 +92,20 @@ export const ClusteredMapView = () => {
         }
     }, [location]);
 
+    useEffect(() => {
+        if (region) {
+            const bbox = calculateBBox(region);
+            const zoom = returnMapZoom(region, bbox, 1);
+            superClusterRef.current.load(
+                filteredEmergencies.map(markerToGeoJSONFeature)
+            );
+            const clusters = superClusterRef.current.getClusters(bbox, zoom);
+            setClusters(clusters);
+        } else {
+            console.log("Region is not set, skipping cluster generation...");
+        }
+    }, [region, filteredEmergencies]);
+
     const ShowEmergencyDetails = (emergency: EmergencyType | null) => {
         if (!emergency) return;
         setEmergency(emergency);
@@ -146,7 +160,7 @@ export const ClusteredMapView = () => {
                     {clusters.map((cluster) => {
                         const {geometry, properties} = cluster;
                         if (!geometry.coordinates || geometry.coordinates.length !== 2) {
-                            console.error("Invalid cluster coordinates:", cluster);
+                            console.log("Invalid cluster coordinates:", cluster);
                             return null;
                         }
 

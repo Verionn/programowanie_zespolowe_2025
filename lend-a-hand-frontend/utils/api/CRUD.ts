@@ -33,7 +33,7 @@ async function apiRequest<T>({
         const responseData: T = await response.json();
         return { status: response.status, data: responseData };
     } catch (error: any) {
-        console.error(`Error in API request to ${url}:`, error.message);
+        console.log(`Error in API request to ${url}:`, error.message);
         throw error;
     }
 }

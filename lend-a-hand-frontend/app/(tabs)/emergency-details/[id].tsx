@@ -47,7 +47,7 @@ export default function EmergencyDetailsScreen() {
                     longitude: response.data.longitude,
                 });
             } catch (error) {
-                console.error("Error fetching emergency details:", error);
+                console.log("Error fetching emergency details:");
             } finally {
                 setLoading(false);
             }
@@ -95,7 +95,7 @@ export default function EmergencyDetailsScreen() {
             await handleVolunteering(emergency.id, !isJoined);
             setReloadTrigger((prev) => prev + 1);
         } catch (error) {
-            console.error("Error performing task action:", error);
+            console.log("Error performing task action:");
         }
     };
 
