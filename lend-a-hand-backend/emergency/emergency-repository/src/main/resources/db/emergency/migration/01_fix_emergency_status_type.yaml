@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01_fix_emergency_status_type
+      author: verion
+      changes:
+        - modifyDataType:
+            tableName: emergency_emergency
+            columnName: status
+            newDataType: boolean

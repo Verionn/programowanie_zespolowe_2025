@@ -13,6 +13,7 @@ public record EmergencyEntity(
         Double latitude,
         Double longitude,
         LocalDateTime startDate) {
+
     public enum EmergencyType {
         FOOD_SUPPLY,
         WATER_SUPPLY,

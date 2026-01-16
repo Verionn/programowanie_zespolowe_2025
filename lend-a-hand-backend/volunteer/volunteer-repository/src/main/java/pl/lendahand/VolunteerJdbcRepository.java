@@ -9,9 +9,9 @@ import pl.lendahand.db.VolunteerRepository;
 import pl.lendahand.db.error.VolunteerRepositoryError;
 import pl.lendahand.db.model.VolunteerEntity;
 
+import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.dao.support.DataAccessUtils.singleResult;
 import static pl.lendahand.VolunteerQuery.*;
 
 public class VolunteerJdbcRepository implements VolunteerRepository {
@@ -21,7 +21,9 @@ public class VolunteerJdbcRepository implements VolunteerRepository {
     private final static String FAILED_TO_DELETE_VOLUNTEER = "Failed to delete volunteer!";
     private final static String SUCCESSFULLY_DELETED_VOLUNTEER = "Successfully deleted volunteer!";
     private final static String SUCCESSFULLY_FOUND_VOLUNTEER = "Successfully found volunteer!";
+    private final static String SUCCESSFULLY_FETCHED_VOLUNTEERS = "Successfully fetched volunteers!";
     private final static String FAILED_TO_FIND_VOLUNTEER = "Failed to find volunteer!";
+    private final static String FAILED_TO_FETCH_VOLUNTEERS = "Failed to fetch volunteers!";
     private final Logger LOGGER = LoggerFactory.getLogger(VolunteerJdbcRepository.class);
     private final JdbcTemplate jdbcTemplate;
     private final VolunteerMapper VOLUNTEER_MAPPER = new VolunteerMapper();
@@ -56,6 +58,15 @@ public class VolunteerJdbcRepository implements VolunteerRepository {
                 .onSuccess(success -> LOGGER.info(SUCCESSFULLY_FOUND_VOLUNTEER))
                 .toEither()
                 .mapLeft(error -> new VolunteerRepositoryError.FailedToFetchVolunteer());
+    }
+
+    @Override
+    public Either<BaseError, List<VolunteerEntity>> fetchVolunteers(UUID emergencyId) {
+        return Try.of(() -> jdbcTemplate.query(FETCH_VOLUNTEERS, VOLUNTEER_MAPPER, emergencyId))
+                .onFailure(error -> LOGGER.warn(FAILED_TO_FETCH_VOLUNTEERS, error))
+                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_FETCHED_VOLUNTEERS))
+                .toEither()
+                .mapLeft(error -> new VolunteerRepositoryError.FailedToFetchVolunteers());
     }
 
     private Try<Integer> attemptSave(VolunteerEntity volunteerEntity) {

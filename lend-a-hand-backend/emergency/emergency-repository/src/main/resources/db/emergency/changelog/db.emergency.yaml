@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: db/emergency/migration/00_init_emergency_schema.yaml
+  - include:
+      file: db/emergency/migration/01_fix_emergency_status_type.yaml

@@ -5,7 +5,7 @@ import pl.lendahand.BaseError;
 import pl.lendahand.db.VolunteerRepository;
 import pl.lendahand.model.Volunteer;
 
-import java.util.Objects;
+import java.util.List;
 import java.util.UUID;
 
 public class Volunteers {
@@ -28,5 +28,9 @@ public class Volunteers {
 
     public Either<BaseError, Boolean> checkStatus(UUID userId, UUID emergencyId) {
         return volunteerRepository.exists(userId, emergencyId);
+    }
+
+    public Either<BaseError, List<Volunteer>> fetchVolunteers(UUID emergencyId) {
+        return volunteerRepository.fetchVolunteers(emergencyId).map(volunteerMapper::volunteerEntitiesToVolunteers);
     }
 }

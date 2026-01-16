@@ -4,6 +4,7 @@ import io.vavr.control.Either;
 import pl.lendahand.BaseError;
 import pl.lendahand.db.model.VolunteerEntity;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface VolunteerRepository {
@@ -13,4 +14,6 @@ public interface VolunteerRepository {
     Either<BaseError, UUID> delete(UUID userId, UUID emergencyId);
 
     Either<BaseError, Boolean> exists(UUID userId, UUID emergencyId);
+
+    Either<BaseError, List<VolunteerEntity>> fetchVolunteers(UUID emergencyId);
 }

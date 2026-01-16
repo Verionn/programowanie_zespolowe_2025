@@ -59,4 +59,15 @@ public class VolunteerController {
         );
     }
 
+    @GetMapping("/emergencies/{emergencyId}/volunteers")
+    ResponseEntity<?> fetchVolunteers(@PathVariable("emergencyId") UUID emergencyId){
+
+        return volunteers.fetchVolunteers(
+                emergencyId
+        ).fold(
+                VolunteerResponseSolver::resolveError,
+                response -> ResponseEntity.status(OK).body(response)
+        );
+    }
+
 }
