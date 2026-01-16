@@ -10,6 +10,7 @@ import java.util.UUID;
 public class EmergencyMapper implements RowMapper<EmergencyEntity> {
     @Override
     public EmergencyEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
+        System.out.println(rs.toString());
         return new EmergencyEntity(
                 UUID.fromString(rs.getString(Fields.ID)),
                 UUID.fromString(rs.getString(Fields.USER_ID)),

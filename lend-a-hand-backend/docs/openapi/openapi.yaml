@@ -125,7 +125,7 @@ paths:
   /emergencies/{emergencyId}/resign:
     delete:
       tags:
-        - Volunteer
+        - volunteer
       summary: Resign from emergency
       operationId: resignFromEmergency
       parameters:
@@ -144,7 +144,7 @@ paths:
   /emergencies/{emergencyId}/singup:
     post:
       tags:
-        - Volunteer
+        - volunteer
       summary: Sign up for emergency
       operationId: signUpForEmergency
       requestBody:
@@ -172,7 +172,7 @@ paths:
   /emergencies/{emergencyId}/status:
     get:
       tags:
-        - Volunteer
+        - volunteer
       summary: get volunteering status
       operationId: volunteerStatus
       parameters:
@@ -190,6 +190,31 @@ paths:
               schema:
                 type: boolean
                 example: true
+        '409':
+          description: An unknown error has occurred
+
+  /emergencies/{emergencyId}/volunteers:
+    get:
+      tags:
+        - volunteer
+      summary: get volunteers for particular emergency
+      operationId: fetchVolunteers
+      parameters:
+        - in: path
+          name: emergencyId
+          schema:
+            type: UUID
+          required: true
+          description: Emergency UUID
+      responses:
+        '200':
+          description: Successfully fetched volunteers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Volunteer'
         '409':
           description: An unknown error has occurred
 
@@ -325,6 +350,18 @@ components:
         emergencyId:
           type: string
           example: "9be5234f-6f31-49b8-b7bd-200d8a532911"
+
+    Volunteer:
+      properties:
+        id:
+          type: string
+          example: "8096c0dd-64f0-49cf-9282-8dfbb788ff0a"
+        userId:
+          type: string
+          example: "8096c0dd-64f0-49cf-9282-8dfbb788ff0b"
+        emergencyId:
+          type: string
+          example: "8096c0dd-64f0-49cf-9282-8dfbb788ff0c"
 
     CreateEmergencyRequest:
       properties:

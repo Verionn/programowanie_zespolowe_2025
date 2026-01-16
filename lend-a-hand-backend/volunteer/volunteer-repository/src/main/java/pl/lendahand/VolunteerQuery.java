@@ -13,4 +13,7 @@ public class VolunteerQuery {
 
     public static final String FIND_VOLUNTEER = "SELECT EXISTS(SELECT 1 FROM %s WHERE %s = ? AND %s = ?)"
             .formatted(VOLUNTEER_TABLE, USER_ID_COLUMN, EMERGENCY_ID_COLUMN);
+
+    public static final String FETCH_VOLUNTEERS = "SELECT * FROM %s WHERE %s = ?"
+            .formatted(VOLUNTEER_TABLE, EMERGENCY_ID_COLUMN);
 }
